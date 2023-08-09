@@ -132,8 +132,10 @@ dmypy.json
 *.csv
 *.pickle
 *.h5ad
+*.RData
 *.loom
 *.pdf
+*.eps
 *.png
 *.jpg
 *.jpeg
@@ -141,6 +143,14 @@ dmypy.json
 *.mtx
 *.txt
 *.rds
+*.npz
+*.h5
+*.txt.gz
+*.gmt
+*.gmx
+
+data/
+figures/
 
 # OS specifics
 **.DS_Store
