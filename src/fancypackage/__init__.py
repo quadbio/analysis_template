@@ -1,3 +1,6 @@
-from .core import DATA_DIR, FIG_DIR
+from importlib.metadata import version
 
-__all__ = ["DATA_DIR", "FIG_DIR"]
+from . import pl, pp, tl, ul
+
+__all__ = ["pl", "pp", "tl", "ul"]
+__version__ = version("fancypackage")
