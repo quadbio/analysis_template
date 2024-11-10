@@ -149,7 +149,7 @@ dmypy.json
 *.gmt
 *.gmx
 
-data/
+# Directories to ignore
 figures/
 
 # OS specifics

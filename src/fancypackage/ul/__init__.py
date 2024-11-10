@@ -1,1 +1,1 @@
-from .constants import DATA_DIR, FIG_DIR
+from .basic import basic_utility
