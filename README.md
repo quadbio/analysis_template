@@ -21,3 +21,12 @@ This contains the raw structure I usually use when doing single-cell/spatial dat
 pip install -e ".[dev,test]"
 pre-commit install
 ```
+
+## Development
+
+This template uses:
+- **Biome** for JavaScript/JSON/YAML formatting
+- **Ruff** for Python linting and formatting
+- **Pre-commit hooks** for code quality
+
+The package provides a minimal structure for analysis projects. Add your analysis-specific dependencies (numpy, pandas, scanpy, etc.) as needed for your project.

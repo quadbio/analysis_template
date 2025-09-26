@@ -8,4 +8,4 @@ class FilePaths:
 
     DATA = ROOT / "data"
     FIGURES = ROOT / "figures"
-    DATASET_1 = DATA / "dataset_1"
+    EXAMPLE_DATASET = DATA / "example_dataset"
