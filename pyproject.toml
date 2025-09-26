@@ -44,6 +44,10 @@ source = "vcs"
 installer = "uv"
 features = [ "dev" ]
 
+# Test the supported Python versions
+[[tool.hatch.envs.hatch-test.matrix]]
+python = [ "3.12", "3.13" ]
+
 [tool.hatch.envs.hatch-test]
 features = [ "test" ]
 
