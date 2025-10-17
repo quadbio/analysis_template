@@ -73,18 +73,38 @@ lint.select = [
 ]
 lint.ignore = [
   "B008", # Errors from function calls in argument defaults. These are fine when the result is immutable.
+  "B904", # Within an except clause, raise exceptions with `raise ... from err`
   "D100", # Missing docstring in public module
+  "D103", # Missing docstring in public function
   "D104", # Missing docstring in public package
   "D105", # __magic__ methods are often self-explanatory, allow missing docstrings
   "D107", # Missing docstring in __init__
   # Disable one in each pair of mutually incompatible rules
-  "D203", # We don’t want a blank line before a class docstring
+  "D203", # We don't want a blank line before a class docstring
   "D213", # <> We want docstrings to start immediately after the opening triple quote
-  "D400", # first line should end with a period [Bug: doesn’t work with single-line docstrings]
+  "D400", # first line should end with a period [Bug: doesn't work with single-line docstrings]
   "D401", # First line should be in imperative mood; try rephrasing
+  "D417", # Missing argument description in the docstring
   "E501", # line too long -> we accept long comment lines; formatter gets rid of long code lines
   "E731", # Do not assign a lambda expression, use a def -> lambda expression assignments are convenient
   "E741", # allow I, O, l as variable names -> I is the identity matrix
+  "F403", # Unable to detect undefined names (star imports)
+  "F405", # Undefined, or defined from star imports
+]
+# Notebook-specific overrides - be much more permissive for exploratory analysis
+lint.per-file-ignores."*.ipynb" = [
+  "B005", # Using .strip() with multi-character strings
+  "B007", # Loop control variable not used within loop body
+  "B018", # Found useless expression (notebooks display values)
+  "C408", # Unnecessary dict() call (dict() is often clearer in notebooks)
+  "C416", # Unnecessary dict comprehension (comprehensions can be clearer)
+  "D",    # All pydocstyle rules (docstrings not needed in notebooks)
+  "E402", # Module level import not at top of file (common in notebooks)
+  "E712", # Comparison to True/False (sometimes clearer in exploratory code)
+  "F402", # Import shadowed by loop variable (common in iterative notebook work)
+  "F811", # Redefinition of unused variable (notebooks are iterative)
+  "F821", # Undefined name (cells might be run out of order)
+  "I",    # isort (import order less important in notebooks)
 ]
 lint.per-file-ignores."*/__init__.py" = [ "F401" ]
 lint.per-file-ignores."docs/*" = [ "I" ]
