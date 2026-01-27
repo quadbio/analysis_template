@@ -1,23 +1,18 @@
-# 🧬 Analysis Template (pixi, notebook-first)
+# 🧬 Analysis Template
 
-Template for single-cell/spatial **analysis** repos. If you're building a Python library, use the [scverse cookiecutter](https://github.com/scverse/cookiecutter-scverse) instead.
+A notebook-first template for single-cell/spatial analysis projects. Uses [pixi](https://pixi.sh) for environment management.
 
-> 📝 **After setup, replace this README** with project-specific docs so collaborators know what the project does. Include: a one-line goal, data locations, key notebooks to run, and who to ping.
+> If you're building a reusable Python library, use the [scverse cookiecutter](https://github.com/scverse/cookiecutter-scverse) instead.
 
 ---
 
-## 📦 What is pixi?
+## 🚀 Getting Started
 
-[Pixi](https://pixi.sh) is a modern package manager that handles both **conda** and **PyPI** packages in one tool. Think of it as a replacement for conda/mamba + pip that:
+**You've initialized a new repo from this template—great!** Follow these steps to set up your project.
 
-- 🔒 Creates **isolated environments** per project (like conda environments)
-- 🔀 Installs packages from **conda-forge AND PyPI** together
-- 📌 Locks exact versions for **reproducibility** (`pixi.lock`)
-- 💻 Works **cross-platform** (macOS, Linux, Windows)
+### Step 1: Install pixi
 
-**You don't need conda or pip installed** — pixi handles everything!
-
-### 🛠️ Installing pixi
+*Skip this if you already have pixi installed.*
 
 ```bash
 # macOS / Linux
@@ -27,90 +22,145 @@ curl -fsSL https://pixi.sh/install.sh | bash
 brew install pixi
 ```
 
-👉 See [pixi installation docs](https://pixi.sh/latest/#installation) for Windows and other options.
+Restart your terminal after installation. See [pixi installation docs](https://pixi.sh/latest/#installation) for Windows and other options.
+
+### Step 1b: Install GitHub CLI (optional)
+
+*Recommended if you're working on a remote server and need to authenticate with GitHub.*
+
+```bash
+# macOS
+brew install gh
+
+# Linux (no sudo required)
+curl -sS https://webi.sh/gh | sh
+```
+
+Then authenticate: `gh auth login`. See [GitHub CLI installation docs](https://github.com/cli/cli#installation) for more options.
+
+### Step 2: Clone your repo locally
+
+```bash
+git clone <your-repo-url>
+cd <your-project-name>
+```
+
+The URL depends on your authentication method:
+- **HTTPS**: `https://github.com/owner/repo.git`
+- **SSH**: `git@github.com:owner/repo.git`
+- **GitHub CLI**: `gh repo clone owner/repo`
+
+### Step 3: Customize the template
+
+Before installing the environment, update these files with your project details:
+
+| File | What to change |
+|------|----------------|
+| `src/myanalysis/` | **Rename this folder** to your project slug (e.g., `src/myproject/`) |
+| `pyproject.toml` | Update `name` to match your renamed folder |
+| `pixi.toml` | Update `name`, `description`, `authors`, kernel `display-name`, and `myanalysis` → your package name in `[pypi-dependencies]` |
+
+### Step 4: Set up the environment
+
+```bash
+pixi install                   # create environment from pixi.toml
+pixi run pre-commit install    # set up code quality hooks
+pixi run install-kernel        # register Jupyter kernel
+```
+
+💡 **Tip**: Use `pixi shell` to enter the environment interactively—then you can run commands directly without the `pixi run` prefix.
+
+### Step 5: Verify your setup
+
+```bash
+pixi run test                  # should pass (tests your package imports correctly)
+pixi run lab                   # opens Jupyter Lab
+```
+
+In Jupyter Lab, check that your kernel appears (look for the name you set in `pixi.toml`).
+
+### Step 6: Make your first commit
+
+```bash
+git add -A
+git commit -m "Initial project setup"
+git push
+```
+
+💡 Pre-commit hooks will run and may reformat some files. If so, just `git add -A && git commit -m "Initial project setup"` again.
+
+🎉 **You're ready to start analyzing!**
 
 ---
 
-## 🚀 Quick start
+## 📊 Start Your Analysis
 
-```bash
-pixi install                   # create environment (reads pixi.toml)
-pixi shell                     # activate the environment
-pre-commit install             # set up code quality hooks (run once)
-pixi run lab                   # start Jupyter Lab
-pixi run test                  # run tests
-pixi run install-kernel        # add Jupyter kernel (run once)
-```
+- **Demo notebook**: Check out `analysis/demo_scRNA_workflow.ipynb` for a complete scRNA-seq workflow example using scanpy's PBMC 3k dataset.
+- **New notebooks**: Copy `analysis/XX-2026-01-27_sample_notebook.ipynb` as a starting point. Follow the naming convention: `[INITIALS]-[YYYY]-[MM]-[DD]_description.ipynb`.
+- **Add your data**: Create folders under `data/` and register paths in `src/<your-package>/_constants.py`.
+- **Replace this README** with your project documentation once you're set up.
 
-### ☕ Daily workflow
+---
 
-Once set up, your typical workflow is:
+## ☕ Daily Workflow
 
 ```bash
 cd your-project
 pixi shell                     # activate environment
-jupyter lab                    # work in notebooks
+jupyter lab                    # work in notebooks, or start via jupyter-hub
 # ... do your analysis ...
 exit                           # leave pixi shell when done
 ```
 
-Or run commands without entering the shell:
+Or run commands directly without entering the shell:
 
 ```bash
-pixi run lab                   # runs Jupyter in pixi environment
-pixi run python my_script.py   # runs script in pixi environment
+pixi run lab                   # start Jupyter Lab
+pixi run python script.py      # run a script
 ```
 
 ---
 
-## ➕ Adding packages
+## 📚 Reference
+
+<details>
+<summary><strong>📦 What is pixi?</strong></summary>
+
+[Pixi](https://pixi.sh) is a modern package manager that handles both **conda** and **PyPI** packages in one tool:
+
+- 🔒 Creates **isolated environments** per project
+- 🔀 Installs from **conda-forge AND PyPI** together
+- 📌 Locks exact versions for **reproducibility** (`pixi.lock`)
+- 💻 Works **cross-platform** (macOS, Linux, Windows)
+
+**You don't need conda or pip installed** — pixi handles everything!
+
+</details>
+
+<details>
+<summary><strong>➕ Adding packages</strong></summary>
 
 All dependencies live in `pixi.toml`. To add a new package:
 
-### Option 1: Command line (recommended)
-
 ```bash
-# Add from conda-forge (preferred for scientific packages)
+# From conda-forge (preferred for scientific packages)
 pixi add numpy
 pixi add "scanpy>=1.10"
 
-# Add from PyPI (when not available on conda-forge)
-pixi add --pypi some-pypi-only-package
+# From PyPI (when not on conda-forge)
+pixi add --pypi some-package
 ```
 
-### Option 2: Edit pixi.toml directly
+Or edit `pixi.toml` directly and run `pixi install`.
 
-```toml
-# In pixi.toml:
-
-[dependencies]
-# Conda packages go here
-numpy = ">=2.0"
-
-[pypi-dependencies]
-# PyPI packages go here
-some-package = "*"
-```
-
-Then run `pixi install` to update the environment.
-
-💡 **Tip**: Prefer **conda-forge** packages when available — they're pre-compiled and faster to install. Use PyPI for packages only available there.
+💡 **Tip**: Prefer PyPI packages when available—mixing conda and pip can cause dependency conflicts.
 
 👉 See [pixi documentation](https://pixi.sh/latest/) for more details.
 
----
+</details>
 
-## ✏️ What to customize
-
-1. Update `pixi.toml` metadata: project name, description, authors, and kernel display name.
-2. Rename the package directory `src/myanalysis/` to your project slug, and update the `name` in `pyproject.toml` to match.
-3. Adjust paths in `src/<your-package>/_constants.py` to match your datasets.
-4. Update `.github/copilot-instructions.md` with your project name, goal, and dataset locations. This helps AI coding assistants (GitHub Copilot, Claude, etc.) understand your project.
-5. 📝 **Replace this README** with project-specific docs: what the project does, how to run key notebooks, and who to contact.
-
----
-
-## 📓 Data and notebooks
+<details>
+<summary><strong>📓 Data and notebook conventions</strong></summary>
 
 - **Notebook naming**: `[INITIALS]-[YYYY]-[MM]-[DD]_description.ipynb`
 - **Data layout** (one folder per dataset):
@@ -122,64 +172,50 @@ Then run `pixi install` to update the environment.
 - **Import paths** via the local package:
 
 ```python
-from myanalysis import FilePaths
+from yourpackage import FilePaths
 ```
 
----
+</details>
 
-## 🔧 Tooling & code quality
+<details>
+<summary><strong>🔧 Pre-commit & code quality</strong></summary>
 
-This template uses **pre-commit hooks** to automatically check your code before each commit. This catches common issues early and keeps code consistent across the team.
+This template uses **pre-commit hooks** to automatically check your code before each commit:
 
-### What are pre-commit hooks?
+| Tool | What it does |
+|------|--------------|
+| [Ruff](https://docs.astral.sh/ruff/) | Lints and formats Python code + notebooks |
+| [Biome](https://biomejs.dev/) | Formats JSON/JSONC files |
+| [pyproject-fmt](https://github.com/tox-dev/pyproject-fmt) | Formats `pyproject.toml` |
 
-[Pre-commit](https://pre-commit.com/) is a tool that runs checks on your code **every time you run `git commit`**. If any check fails, the commit is blocked until you fix the issue. This ensures:
-
-- ✅ Code is consistently formatted
-- ✅ Common bugs are caught early
-- ✅ Everyone's code looks the same
-
-### Tools we use
-
-| Tool | What it does | Docs |
-|------|--------------|------|
-| 🦀 **[Ruff](https://docs.astral.sh/ruff/)** | Lints (finds bugs/style issues) and formats Python code + Jupyter notebooks. Super fast! | [Rules](https://docs.astral.sh/ruff/rules/) |
-| 🌿 **[Biome](https://biomejs.dev/)** | Formats JSON and JSONC files for consistency | [Guide](https://biomejs.dev/guides/getting-started/) |
-| 📋 **[pyproject-fmt](https://github.com/tox-dev/pyproject-fmt)** | Keeps `pyproject.toml` nicely formatted | — |
-
-### Setting up pre-commit
-
-Run this once after cloning the repo:
-
-```bash
-pixi shell
-pre-commit install
-```
-
-Now hooks run automatically on `git commit`. To run all checks manually:
+Hooks run automatically on `git commit`. To run manually:
 
 ```bash
 pre-commit run --all-files
 ```
 
-💡 **Tip**: If a check reformats your code, just `git add` the changes and commit again!
+💡 If a check reformats your code, just `git add` the changes and commit again.
 
----
+</details>
 
-## 🖥️ GPU notes
+<details>
+<summary><strong>🖥️ GPU notes</strong></summary>
 
 | Platform | PyTorch | JAX |
 |----------|---------|-----|
 | **macOS** (Apple Silicon) | ✅ MPS acceleration | ❌ CPU only |
-| **Linux** (NVIDIA GPU) | ✅ CUDA | ✅ CUDA 12 via `jax[cuda12]` |
+| **Linux** (NVIDIA GPU) | ✅ CUDA | ✅ CUDA 12 |
 
-The template automatically configures the right packages per platform. Linux also gets [rapids-singlecell](https://rapids-singlecell.readthedocs.io/) for GPU-accelerated single-cell analysis.
+The template auto-configures packages per platform. Linux also gets [rapids-singlecell](https://rapids-singlecell.readthedocs.io/) for GPU-accelerated analysis.
 
----
+</details>
 
-## 🖧 Cluster usage
+<details>
+<summary><strong>🖧 Cluster usage</strong></summary>
 
 For cluster usage (e.g., ETH Euler):
 
 - 📚 General docs: https://docs.hpc.ethz.ch/
-- 🚀 Start notebooks via JupyterHub: https://jupyter.euler.hpc.ethz.ch/hub/
+- 🚀 Notebooks via JupyterHub: https://jupyter.euler.hpc.ethz.ch/hub/
+
+</details>

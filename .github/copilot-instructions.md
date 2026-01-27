@@ -1,9 +1,8 @@
 # Copilot Instructions for Analysis Template
 
-## Project context (fill these in!)
-- **Project name:** <fill>
-- **One-liner goal:** <fill>
-- **Primary datasets / locations:** <fill>
+## Project context
+
+See the project README for details about the project goal, datasets, and structure.
 
 ## Critical rules
 - **Don't update Jupyter notebooks** — I manage them myself
@@ -22,7 +21,7 @@
 ## Project structure
 - **Notebooks**: `analysis/[INITIALS]-[YYYY]-[MM]-[DD]_description.ipynb`
 - **Data**: `data/<dataset>/{raw,processed,resources,results}/`
-- **Paths**: Use `from myanalysis import FilePaths` (edit `_constants.py` for datasets)
+- **Paths**: Use `from <package> import FilePaths` (edit `_constants.py` for datasets)
 - **Deps**: All in `pixi.toml` (not pyproject.toml)
 - pyproject.toml exists mainly for package metadata and testing
 - Run `pixi install` after pulling changes that update `pixi.toml`
