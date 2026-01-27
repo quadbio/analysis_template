@@ -52,7 +52,9 @@ torch = "*"
 jupyterlab = "*"
 ipykernel = "*"
 ipywidgets = "*"
-pandas = "*"
+# Pin pandas < 3.0 until anndata supports Arrow-backed strings
+# https://github.com/scverse/anndata/issues/1434
+pandas = ">=2.0, <3"
 matplotlib = "*"
 seaborn = "*"
 
