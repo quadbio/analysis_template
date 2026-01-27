@@ -1,7 +1,7 @@
 from importlib.metadata import version
 
 from ._constants import FilePaths
-from .plotting import embedding_density, qc_violin, styled_umap
+from .plotting import qc_violin
 
-__all__ = ["FilePaths", "embedding_density", "qc_violin", "styled_umap"]
+__all__ = ["FilePaths", "qc_violin"]
 __version__ = version("myanalysis")

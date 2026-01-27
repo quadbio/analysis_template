@@ -47,7 +47,6 @@ squidpy = "*"
 scvi-tools = "*"
 cellrank = "*"
 torch = "*"
-# decoupler = ">=1.8"  # Uncomment when needed (may cause install issues on some platforms)
 
 # Notebook workflow
 jupyterlab = "*"
@@ -61,7 +60,8 @@ seaborn = "*"
 pre-commit = "*"
 pytest = "*"
 session-info2 = "*"
-pot = ">=0.9"
 
 # Local editable package for path helpers
 myanalysis = { path = ".", editable = true }
+igraph = ">=1.0.0, <2"
+celltypist = ">=1.7.1, <2"
