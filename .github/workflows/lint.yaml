@@ -1,4 +1,4 @@
-name: Tests
+name: Code Quality
 
 on:
   push:
@@ -11,8 +11,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
-    name: Run pytest
+  lint:
+    name: Lint & Format
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,5 +23,5 @@ jobs:
         with:
           pixi-version: v0.40.0
           cache: true
-      - name: Run tests
-        run: pixi run test
+      - name: Run pre-commit checks
+        run: pixi run pre-commit run --all-files
