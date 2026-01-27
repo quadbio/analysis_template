@@ -1,32 +1,59 @@
-# Analysis template repository
+# Analysis template (pixi, notebook-first)
 
-This contains the raw structure I usually use when doing single-cell/spatial data analysis. This template is based on ideas from Philipp Weiler's [template repository](https://github.com/WeilerP/sc_analysis_template) as well as the [scverse cookiecutter template](https://github.com/scverse/cookiecutter-scverse).
+Template for single-cell/spatial **analysis** repos. If you are building a Python library, use the scverse cookiecutter instead: https://github.com/scverse/cookiecutter-scverse.
 
-## Set up
+After you set this up, **replace this README with project-specific docs** so collaborators know what the project does. A good replacement includes: a one-line goal, data locations, key notebooks to run, and who to ping.
 
-1. Rename `src/fancypackage/`.
-2. Update `pyproject.toml` to include the following information:
-    - Project name
-    - Project description
-    - Project-specific Python requirements
-    - Project author
-    - Project maintainers
-    - Project URLs
-3. Update `src/fancypackage/ul/constants.py` to include any paths relevant to your analysis and that should be accessible from any script or Jupyter notebook
-4. Update this README to include the relevant information about your project.
-
-## Installation
+## Quick start (pixi)
 
 ```bash
-pip install -e ".[dev,test]"
-pre-commit install
+pixi install                   # create environment
+pixi shell                     # activate it
+pre-commit install             # set up git hooks (run once)
+pixi run jupyter lab           # start notebooks
+pixi run pytest                # run tests
+pixi run install-kernel        # add Jupyter kernel (run once)
 ```
 
-## Development
+Environment is defined in `pixi.toml` (GPU-ready: torch, jax, rapids-singlecell on Linux; MPS on macOS). `pyproject.toml` is kept for metadata and tool configs (ruff, pytest, hatch-vcs) only.
 
-This template uses:
-- **Biome** for JavaScript/JSON/YAML formatting
-- **Ruff** for Python linting and formatting
-- **Pre-commit hooks** for code quality
+## What to customize
 
-The package provides a minimal structure for analysis projects. Add your analysis-specific dependencies (numpy, pandas, scanpy, etc.) as needed for your project.
+1. Update `pixi.toml` metadata: project name, description, authors, and kernel display name.
+2. Rename the package directory `src/myanalysis/` to your project slug, and update the `name` in `pyproject.toml` to match.
+3. Adjust paths in `src/<your-package>/_constants.py` to match your datasets.
+4. Update `.github/copilot-instructions.md` with your project name, goal, and dataset locations. This helps AI coding assistants (GitHub Copilot, Claude, etc.) understand your project when you ask them for help.
+5. **Replace this README** with project-specific docs: what the project does, how to run key notebooks, and who to contact.
+
+## Data and notebooks
+
+- Notebook naming: `[INITIALS]-[YYYY]-[MM]-[DD]_description.ipynb`.
+- Data layout (one folder per dataset):
+    - `data/<dataset>/raw/`
+    - `data/<dataset>/processed/`
+    - `data/<dataset>/resources/`
+    - `data/<dataset>/results/`
+- Figures: `figures/` or `data/<dataset>/results/`.
+- Import paths via the local package:
+
+```python
+from myanalysis import FilePaths
+```
+
+## Tooling
+
+- **Pixi**: single source of dependency truth (see `pixi.toml`).
+- **Ruff**: lint/format Python + notebooks (config in `pyproject.toml`).
+- **Biome**: format JSON/YAML (pre-commit hook).
+- **Pre-commit**: install with `pre-commit install` (after `pixi shell`).
+
+## GPU notes
+
+- macOS: torch uses MPS; JAX is CPU-only.
+- Linux: `rapids-singlecell` + `jax[cuda12]` enable GPU acceleration.
+
+## Clusters
+
+For cluster usage (e.g., ETH Euler):
+- General docs: https://docs.hpc.ethz.ch/
+- Start notebooks via JupyterHub: https://jupyter.euler.hpc.ethz.ch/hub/

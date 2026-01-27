@@ -1,10 +1,10 @@
 import pytest
 
-import fancypackage
+import myanalysis
 
 
 def test_package_has_version():
-    assert fancypackage.__version__ is not None
+    assert myanalysis.__version__ is not None
 
 
 @pytest.mark.skip(reason="This decorator should be removed when test passes.")

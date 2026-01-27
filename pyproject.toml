@@ -3,53 +3,23 @@ build-backend = "hatchling.build"
 requires = [ "hatch-vcs", "hatchling" ]
 
 [project]
-name = "fancypackage"
-description = "Fancy Package"
+name = "myanalysis"
+# Minimal metadata - project info lives in pixi.toml
+# Only the package name matters here (must match src/NAME/ directory)
 readme = "README.md"
 license = { file = "LICENSE" }
-maintainers = [
-  { name = "Jane Doe", email = "jane.doe@usa.com" },
-]
-authors = [
-  { name = "Jane Doe" },
-]
 requires-python = ">=3.12"
 classifiers = [
   "Programming Language :: Python :: 3 :: Only",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
 ]
-dynamic = [ "version" ]
-dependencies = [
-  # for debug logging (referenced from the issue template)
-  "session-info2",
-]
-optional-dependencies.dev = [
-  "pre-commit",
-  "twine>=4.0.2",
-]
+# Dependency management lives in pixi.toml
 
-optional-dependencies.test = [
-  "coverage",
-  "pytest",
-]
-# https://docs.pypi.org/project_metadata/#project-urls
-urls.Homepage = "https://github.com/url/to/repo.git"
-urls.Source = "https://github.com/url/to/repo.git"
+dynamic = [ "version" ]
 
 [tool.hatch.version]
 source = "vcs"
-
-[tool.hatch.envs.default]
-installer = "uv"
-features = [ "dev" ]
-
-# Test the supported Python versions
-[[tool.hatch.envs.hatch-test.matrix]]
-python = [ "3.12", "3.13" ]
-
-[tool.hatch.envs.hatch-test]
-features = [ "test" ]
 
 [tool.ruff]
 line-length = 120
@@ -116,10 +86,4 @@ testpaths = [ "tests" ]
 xfail_strict = true
 addopts = [
   "--import-mode=importlib", # allow using test files with same name
-]
-
-[tool.coverage.run]
-source = [ "fancypackage" ]
-omit = [
-  "**/test_*.py",
 ]
