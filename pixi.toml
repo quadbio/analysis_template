@@ -24,6 +24,9 @@ numpy = ">=2.0,<2.2"
 petsc4py = "*"
 slepc4py = "*"
 
+# Shapely from conda to avoid pygeos build issues
+shapely = "*"
+
 [target.osx-arm64.pypi-dependencies]
 # CPU-only JAX on macOS (MPS handled automatically by torch)
 jax = "<0.9.0"
@@ -44,6 +47,7 @@ squidpy = "*"
 scvi-tools = "*"
 cellrank = "*"
 torch = "*"
+# decoupler = ">=1.8"  # Uncomment when needed (may cause install issues on some platforms)
 
 # Notebook workflow
 jupyterlab = "*"
