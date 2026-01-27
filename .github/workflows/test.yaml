@@ -1,4 +1,4 @@
-name: Test
+name: Tests
 
 on:
   push:
@@ -24,5 +24,3 @@ jobs:
           cache: true
       - name: Run tests
         run: pixi run test
-          with:
-            jobs: ${{ toJSON(needs) }}
