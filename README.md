@@ -153,7 +153,7 @@ pixi add --pypi some-package
 
 Or edit `pixi.toml` directly and run `pixi install`.
 
-💡 **Tip**: Prefer PyPI packages when available—mixing conda and pip can cause dependency conflicts.
+💡 **Tip**: Prefer PyPI packages when available — mixing conda and pip can cause dependency conflicts.
 
 👉 See [pixi documentation](https://pixi.sh/latest/) for more details.
 
