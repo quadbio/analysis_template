@@ -1,21 +1,96 @@
 # Analysis template (pixi, notebook-first)
 
-Template for single-cell/spatial **analysis** repos. If you are building a Python library, use the scverse cookiecutter instead: https://github.com/scverse/cookiecutter-scverse.
+Template for single-cell/spatial **analysis** repos. If you are building a Python library, use the [scverse cookiecutter](https://github.com/scverse/cookiecutter-scverse) instead.
 
 After you set this up, **replace this README with project-specific docs** so collaborators know what the project does. A good replacement includes: a one-line goal, data locations, key notebooks to run, and who to ping.
 
-## Quick start (pixi)
+## What is pixi?
+
+[Pixi](https://pixi.sh) is a modern package manager that handles both **conda** and **PyPI** packages in one tool. Think of it as a replacement for conda/mamba + pip that:
+
+- Creates isolated environments per project (like conda environments)
+- Installs packages from conda-forge AND PyPI together
+- Locks exact versions for reproducibility (`pixi.lock`)
+- Works cross-platform (macOS, Linux, Windows)
+
+**You don't need conda or pip installed** — pixi handles everything.
+
+### Installing pixi
 
 ```bash
-pixi install                   # create environment
-pixi shell                     # activate it
+# macOS / Linux
+curl -fsSL https://pixi.sh/install.sh | bash
+
+# Or with Homebrew
+brew install pixi
+```
+
+See [pixi installation docs](https://pixi.sh/latest/#installation) for other options.
+
+## Quick start
+
+```bash
+pixi install                   # create environment (reads pixi.toml)
+pixi shell                     # activate the environment
 pre-commit install             # set up git hooks (run once)
 pixi run jupyter lab           # start notebooks
 pixi run pytest                # run tests
 pixi run install-kernel        # add Jupyter kernel (run once)
 ```
 
-Environment is defined in `pixi.toml` (GPU-ready: torch, jax, rapids-singlecell on Linux; MPS on macOS). `pyproject.toml` is kept for metadata and tool configs (ruff, pytest, hatch-vcs) only.
+### Daily workflow
+
+Once set up, your typical workflow is:
+
+```bash
+cd your-project
+pixi shell                     # activate environment
+jupyter lab                    # work in notebooks
+# ... do your analysis ...
+exit                           # leave pixi shell when done
+```
+
+Or run commands without entering the shell:
+
+```bash
+pixi run jupyter lab           # runs jupyter in pixi environment
+pixi run python my_script.py   # runs script in pixi environment
+```
+
+## Adding packages
+
+All dependencies live in `pixi.toml`. To add a new package:
+
+### Option 1: Command line (recommended)
+
+```bash
+# Add from conda-forge (preferred for scientific packages)
+pixi add numpy
+pixi add "scanpy>=1.10"
+
+# Add from PyPI (when not available on conda-forge)
+pixi add --pypi some-pypi-only-package
+```
+
+### Option 2: Edit pixi.toml directly
+
+```toml
+# In pixi.toml:
+
+[dependencies]
+# Conda packages go here
+numpy = ">=2.0"
+
+[pypi-dependencies]
+# PyPI packages go here
+some-package = "*"
+```
+
+Then run `pixi install` to update the environment.
+
+**Tip**: Prefer conda-forge packages when available — they're pre-compiled and faster to install. Use PyPI for packages only available there.
+
+See [pixi documentation](https://pixi.sh/latest/) for more details.
 
 ## What to customize
 
@@ -42,15 +117,17 @@ from myanalysis import FilePaths
 
 ## Tooling
 
-- **Pixi**: single source of dependency truth (see `pixi.toml`).
-- **Ruff**: lint/format Python + notebooks (config in `pyproject.toml`).
-- **Biome**: format JSON/YAML (pre-commit hook).
-- **Pre-commit**: install with `pre-commit install` (after `pixi shell`).
+- **Pixi**: package manager and environment ([docs](https://pixi.sh))
+- **Ruff**: lint/format Python + notebooks ([docs](https://docs.astral.sh/ruff/))
+- **Biome**: format JSON/YAML ([docs](https://biomejs.dev/))
+- **Pre-commit**: git hooks for code quality — install with `pre-commit install` after `pixi shell`
 
 ## GPU notes
 
-- macOS: torch uses MPS; JAX is CPU-only.
-- Linux: `rapids-singlecell` + `jax[cuda12]` enable GPU acceleration.
+- **macOS**: PyTorch uses MPS (Apple Silicon GPU); JAX is CPU-only.
+- **Linux**: `rapids-singlecell` + `jax[cuda12]` enable NVIDIA GPU acceleration.
+
+The template automatically configures the right packages per platform.
 
 ## Clusters
 
