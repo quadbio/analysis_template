@@ -160,3 +160,4 @@ figures/
 *.Rhistory
 
 .vscode/*
+.github/prompts/*

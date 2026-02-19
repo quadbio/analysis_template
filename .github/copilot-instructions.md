@@ -4,11 +4,6 @@
 
 See the project README for details about the project goal, datasets, and structure.
 
-## Critical rules
-- **Don't update Jupyter notebooks** — I manage them myself
-- Use `pixi run <command>` or `pixi shell` for all commands
-- Summarize in chat, don't create markdown summary files
-
 ## Quick reference
 
 | Task | Command |
