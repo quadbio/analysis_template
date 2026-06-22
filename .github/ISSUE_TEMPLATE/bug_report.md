@@ -33,7 +33,7 @@ assignees: ""
 <details> <summary> Versions </summary>
 
 ```pytb
-# Paste the ouput of tradeseq.__version__ and all relevant versions here
+# Paste the output of `session_info2.session_info()` (or your package's __version__) and all relevant versions here
 ```
 
 </details>

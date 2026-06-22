@@ -4,9 +4,12 @@ This module provides custom plotting functions that wrap scanpy/matplotlib
 with project-specific defaults and styling.
 """
 
+from pathlib import Path
+
 import matplotlib.pyplot as plt
 import scanpy as sc
 from anndata import AnnData
+from matplotlib.figure import Figure
 
 
 def qc_violin(
@@ -14,8 +17,8 @@ def qc_violin(
     *,
     groupby: str | None = None,
     figsize: tuple[float, float] = (10, 3),
-    save: str | None = None,
-) -> plt.Figure:
+    save: str | Path | None = None,
+) -> Figure:
     """Plot QC metrics as violin plots with consistent styling.
 
     Parameters
@@ -31,7 +34,8 @@ def qc_violin(
 
     Returns
     -------
-    matplotlib Figure object.
+    Figure
+        The matplotlib figure containing the violin plots.
     """
     qc_vars = ["n_genes_by_counts", "total_counts", "pct_counts_mt"]
     available = [v for v in qc_vars if v in adata.obs.columns]
@@ -48,7 +52,7 @@ def qc_violin(
         sc.pl.violin(adata, var, groupby=groupby, ax=ax, show=False)
         ax.set_title(var.replace("_", " ").title())
 
-    plt.tight_layout()
+    fig.tight_layout()
 
     if save is not None:
         fig.savefig(save, dpi=150, bbox_inches="tight")
