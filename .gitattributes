@@ -1,0 +1,4 @@
+# Strip Jupyter notebook outputs on the way into git, while keeping them in your
+# working copy. Activate once per clone with `pixi run install-hooks`.
+*.ipynb filter=nbstripout
+*.ipynb diff=ipynb
