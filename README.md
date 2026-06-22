@@ -52,13 +52,32 @@ The URL depends on your authentication method:
 
 ### Step 3: Customize the template
 
-Before installing the environment, update these files with your project details:
+The template ships with a placeholder package name (`myanalysis`) and project
+name (`analysis-template`). Rename them in one shot with the included script
+(stdlib-only, so run it with plain `python` *before* installing the env):
+
+```bash
+python scripts/rename_package.py myproject
+# or set the Jupyter kernel display name explicitly:
+python scripts/rename_package.py myproject --display-name "My Project"
+```
+
+This renames `src/myanalysis/` → `src/myproject/` and updates every reference in
+`pyproject.toml`, `pixi.toml` (package + workspace + kernel name), `tests/`, and
+the notebooks under `analysis/`.
+
+Then finish by hand:
 
 | File | What to change |
 |------|----------------|
-| `src/myanalysis/` | **Rename this folder** to your project slug (e.g., `src/myproject/`) |
-| `pyproject.toml` | Update `name` to match your renamed folder |
-| `pixi.toml` | Update `name`, `description`, `authors`, kernel `display-name`, and `myanalysis` → your package name in `[pypi-dependencies]` |
+| `pixi.toml` | Update `[workspace]` `description` and `authors` |
+| `README.md` | Replace with your own project documentation (Step 6 / later) |
+
+> Doing it manually instead? The placeholder `myanalysis` appears in
+> `pyproject.toml`, the `src/myanalysis/` folder name, `pixi.toml`
+> (`[pypi-dependencies]`), `tests/test_basic.py`, and the demo notebook; the
+> project name `analysis-template` and the kernel `display-name` live in the
+> `pixi.toml` `[tasks]` `install-kernel` command. The script handles all of them.
 
 ### Step 4: Set up the environment
 
@@ -100,7 +119,7 @@ git push
 
 ## 📊 Start Your Analysis
 
-- **Demo notebook**: Check out `analysis/demo_scRNA_workflow.ipynb` for a complete scRNA-seq workflow example using scanpy's PBMC 3k dataset.
+- **Demo notebook**: Check out `analysis/ML-2026-01-27_demo_scRNA_workflow.ipynb` for a complete scRNA-seq workflow example using scanpy's PBMC 3k dataset.
 - **New notebooks**: Copy `analysis/XX-2026-01-27_sample_notebook.ipynb` as a starting point. Follow the naming convention: `[INITIALS]-[YYYY]-[MM]-[DD]_description.ipynb`.
 - **Add your data**: Create folders under `data/` and register paths in `src/<your-package>/_constants.py`.
 - **Replace this README** with your project documentation once you're set up.
@@ -213,12 +232,50 @@ pre-commit run --all-files
 <details>
 <summary><strong>🖥️ GPU notes</strong></summary>
 
-| Platform | PyTorch | JAX |
-|----------|---------|-----|
-| **macOS** (Apple Silicon) | ✅ MPS acceleration | ❌ CPU only |
-| **Linux** (NVIDIA GPU) | ✅ CUDA | ✅ CUDA 12 |
+The **default** environment is CPU-only on every platform (on macOS, PyTorch
+still uses MPS automatically). This is what `pixi install` and CI use.
 
-The template auto-configures packages per platform. Linux also gets [rapids-singlecell](https://rapids-singlecell.readthedocs.io/) for GPU-accelerated analysis.
+GPU acceleration lives in a separate **`gpu`** environment that you opt into
+explicitly on a Linux/CUDA machine (e.g. ETH Euler):
+
+```bash
+pixi install -e gpu            # CUDA 12 build of JAX + rapids-singlecell
+pixi run -e gpu install-kernel # register a kernel for the gpu env
+pixi shell -e gpu              # or activate it interactively
+```
+
+| Environment | PyTorch | JAX | rapids-singlecell |
+|-------------|---------|-----|-------------------|
+| `default` (all platforms) | ✅ (MPS on macOS) | CPU | ❌ |
+| `gpu` (Linux + NVIDIA only) | ✅ CUDA | ✅ CUDA 12 | ✅ |
+
+> Keeping the GPU stack out of the default environment means CI and CPU-only
+> machines don't try to resolve unusable CUDA wheels. See
+> [rapids-singlecell](https://rapids-singlecell.readthedocs.io/).
+
+</details>
+
+<details>
+<summary><strong>🔑 Secrets & environment variables</strong></summary>
+
+Store API keys and other secrets in a `.env` file at the repo root. It is
+**gitignored** and must never be committed.
+
+```bash
+cp .env.example .env   # then fill in your real values
+```
+
+`.env.example` (tracked, placeholder values only) documents which variables the
+project expects. Load them in a notebook or script with, e.g.,
+[python-dotenv](https://github.com/theskumar/python-dotenv):
+
+```python
+from dotenv import load_dotenv
+load_dotenv()
+```
+
+If you ever paste a real key into a tracked file, rotate it immediately in the
+provider's dashboard — git history is hard to scrub.
 
 </details>
 
