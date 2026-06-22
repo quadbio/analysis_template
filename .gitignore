@@ -161,3 +161,7 @@ figures/
 
 .vscode/*
 .github/prompts/*
+
+# Claude Code local files (personal settings + local agent worktrees)
+.claude/settings.local.json
+.claude/worktrees/
