@@ -13,6 +13,7 @@ extra-index-urls = ["https://pypi.nvidia.com"]
 lab = "jupyter lab"
 test = "pytest"
 install-kernel = "python -m ipykernel install --user --name=analysis-template --display-name='Analysis Template (Pixi)'"
+install-hooks = { cmd = "pre-commit install --install-hooks && nbstripout --install && git config diff.ipynb.textconv 'nbstripout -t'", description = "Install pre-commit hooks + the nbstripout notebook-output filter (run once per clone)" }
 
 [dependencies]
 python = "3.12.*"

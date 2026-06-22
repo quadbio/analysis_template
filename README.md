@@ -64,9 +64,14 @@ Before installing the environment, update these files with your project details:
 
 ```bash
 pixi install                   # create environment from pixi.toml
-pixi run pre-commit install    # set up code quality hooks
+pixi run install-hooks         # pre-commit hooks + notebook output-stripping filter
 pixi run install-kernel        # register Jupyter kernel
 ```
+
+> `install-hooks` also sets up the [nbstripout](https://github.com/kynan/nbstripout)
+> git filter. Notebook outputs are then stripped from commits automatically while
+> staying in your working copy. **Run it once in every clone** (including remote
+> servers and worktrees), or outputs may slip into git.
 
 💡 **Tip**: Use `pixi shell` to enter the environment interactively—then you can run commands directly without the `pixi run` prefix.
 
@@ -187,6 +192,13 @@ This template uses **pre-commit hooks** to automatically check your code before 
 | [Ruff](https://docs.astral.sh/ruff/) | Lints and formats Python code + notebooks |
 | [Biome](https://biomejs.dev/) | Formats JSON/JSONC files |
 | [pyproject-fmt](https://github.com/tox-dev/pyproject-fmt) | Formats `pyproject.toml` |
+
+**Notebook outputs** are handled separately by an [nbstripout](https://github.com/kynan/nbstripout)
+git *filter* (not a pre-commit hook), set up by `pixi run install-hooks`. The filter
+strips outputs from the committed copy while leaving them in your working tree, so
+your notebooks stay rendered locally but git history stays clean. CI fails the build
+if a notebook with outputs ever lands in the repo (a clone that skipped
+`install-hooks`), via `nbstripout --verify`.
 
 Hooks run automatically on `git commit`. To run manually:
 

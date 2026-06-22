@@ -25,3 +25,5 @@ jobs:
           cache: true
       - name: Run pre-commit checks
         run: pixi run pre-commit run --all-files
+      - name: Verify notebooks contain no outputs
+        run: git ls-files -z '*.ipynb' | xargs -0 -r pixi run nbstripout --verify
