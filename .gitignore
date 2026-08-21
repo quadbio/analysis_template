@@ -150,8 +150,17 @@ dmypy.json
 *.gmt
 *.gmx
 
-# Directories to ignore
+# Directories to ignore. Unanchored, so they match at any depth: these are the
+# untracked half of an analysis task (see AGENTS.md "Analysis tasks").
 figures/
+outputs/
+logs/
+
+# ...but a task's results/ and reports/ are tracked on purpose: small evidence
+# tables and the HTML report are what a reviewer actually reads on GitHub.
+!analysis/**/results/*.csv
+!analysis/**/results/*.json
+!analysis/**/reports/*.html
 
 # OS specifics
 **.DS_Store
