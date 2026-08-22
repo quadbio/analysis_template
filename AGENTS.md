@@ -56,8 +56,10 @@ to the task that made it. That reverse index is what keeps central storage from 
 - Datasets live in `data/<dataset>/{raw,processed,resources,results}/`, gitignored. Note that
   `data/<dataset>/results/` is *central and untracked* — not the same thing as a task's tracked
   `results/`.
-- Use `from <package> import FilePaths`; edit `_constants.py` to add a dataset. Never hardcode a
-  dataset path.
+- Reach a dataset with `FilePaths.dataset("<name>")`, which gives `.raw`, `.processed`,
+  `.resources`, `.results` and a `.create()`. Never hardcode a dataset path. `FilePaths.ROOT` is
+  the main checkout even when called from a worktree, so central data resolves the same either
+  way. Task outputs come from `task_paths(__file__)`, the same shape with a `.create()`.
 - **Accumulate by addition.** Adding new keys to a freshly re-read object is commutative, so
   concurrent sessions cannot lose each other's work whatever the write order. Removing something
   is not — that means a new dated copy, keeping the old one so old scripts still run.
@@ -92,6 +94,6 @@ resolved data path with it — into the worktree.
 
 ## Sessions
 
-One task, one session, one worktree. Exit with `/exit` and answer *remove*; push before walking
-away, since a worktree with unpushed commits is the only unrecoverable state. Don't exit while
-batch jobs are still queued — they reference scripts by path inside the worktree.
+One task, one session, one worktree. Remove the worktree when you end the session, and push
+first — a worktree with unpushed commits is the only unrecoverable state. Don't tear one down
+while batch jobs are still queued: they reference scripts by path inside it.
