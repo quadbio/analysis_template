@@ -1,22 +1,6 @@
-# Copilot Instructions for Analysis Template
+# Copilot Instructions
 
-## Project context
+Canonical repo guidance lives in `AGENTS.md` — layout, paths, environments and commands.
+`README.md` is the user-facing overview.
 
-See the project README for details about the project goal, datasets, and structure.
-
-## Quick reference
-
-| Task | Command |
-|------|---------|
-| Run Python | `pixi run python script.py` |
-| Run tests | `pixi run test` |
-| Add conda package | `pixi add <package>` |
-| Add PyPI package | `pixi add --pypi <package>` |
-
-## Project structure
-- **Notebooks**: `analysis/[INITIALS]-[YYYY]-[MM]-[DD]_description.ipynb`
-- **Data**: `data/<dataset>/{raw,processed,resources,results}/`
-- **Paths**: Use `from <package> import FilePaths` (edit `_constants.py` for datasets)
-- **Deps**: All in `pixi.toml` (not pyproject.toml)
-- pyproject.toml exists mainly for package metadata and testing
-- Run `pixi install` after pulling changes that update `pixi.toml`
+If this file conflicts with them, they win.

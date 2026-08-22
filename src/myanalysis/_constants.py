@@ -1,77 +1,41 @@
-"""Project-wide path constants for notebooks and scripts."""
+"""Project-wide paths for notebooks and scripts."""
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+import subprocess
+from functools import lru_cache
 from pathlib import Path
 
-# Files that mark the repository root, searched for upward from this module.
-_ROOT_MARKERS = ("pixi.toml", ".git")
 
+@lru_cache(maxsize=1)
+def _repo_root() -> Path:
+    """The repository root, from git so a worktree still names the main checkout.
 
-def _find_root(start: Path) -> Path:
-    """Locate the repo root by walking upward until a marker file is found.
-
-    Falls back to the fixed ``src/<package>/`` layout (three levels up) when no
-    marker is present, e.g. for a non-editable installed copy.
+    Falls back to walking up for ``pixi.toml``/``.git`` outside a repository.
     """
-    for parent in (start, *start.parents):
-        if any((parent / marker).exists() for marker in _ROOT_MARKERS):
-            return parent
-    return start.parents[2]
-
-
-@dataclass(frozen=True)
-class DatasetPaths:
-    """Standard subfolders for a single dataset (``data/<name>/``)."""
-
-    root: Path
-
-    @property
-    def raw(self) -> Path:
-        """Original, unmodified input data."""
-        return self.root / "raw"
-
-    @property
-    def processed(self) -> Path:
-        """Preprocessed / intermediate data."""
-        return self.root / "processed"
-
-    @property
-    def resources(self) -> Path:
-        """Reference data, gene sets, annotations."""
-        return self.root / "resources"
-
-    @property
-    def results(self) -> Path:
-        """Analysis outputs (tables, exported objects)."""
-        return self.root / "results"
-
-    def create(self) -> DatasetPaths:
-        """Create all standard subfolders (idempotent). Returns ``self``."""
-        for path in (self.raw, self.processed, self.resources, self.results):
-            path.mkdir(parents=True, exist_ok=True)
-        return self
+    try:
+        git_dir = subprocess.run(
+            ["git", "rev-parse", "--path-format=absolute", "--git-common-dir"],
+            cwd=Path(__file__).resolve().parent,
+            capture_output=True,
+            text=True,
+            check=True,
+        ).stdout.strip()
+        return Path(git_dir).parent
+    except (subprocess.CalledProcessError, OSError):
+        here = Path(__file__).resolve()
+        for parent in (here, *here.parents):
+            if (parent / "pixi.toml").exists() or (parent / ".git").exists():
+                return parent
+        return here.parents[2]
 
 
 class FilePaths:
-    """Project-wide paths for notebooks and scripts."""
+    """Project-wide paths. Add a dataset as a constant here; never hardcode one."""
 
-    ROOT = _find_root(Path(__file__).resolve())
+    ROOT = _repo_root()
 
     DATA = ROOT / "data"
     FIGURES = ROOT / "figures"
 
-    # The bundled example dataset; customize / add your own via `dataset()`.
     EXAMPLE_DATASET = DATA / "example_dataset"
-
-    @classmethod
-    def dataset(cls, name: str) -> DatasetPaths:
-        """Return the standard raw/processed/resources/results paths for a dataset.
-
-        Examples
-        --------
-        >>> paths = FilePaths.dataset("pbmc3k").create()
-        >>> paths.processed / "adata.h5ad"  # doctest: +SKIP
-        """
-        return DatasetPaths(cls.DATA / name)
