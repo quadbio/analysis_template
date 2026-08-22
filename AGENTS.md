@@ -12,22 +12,19 @@ never restated.
 
 ## Paths
 
-Never hardcode a path into `data/` or `figures/`. Everything resolves from `FilePaths`:
+Never hardcode a path into `data/` or `figures/` — every path hangs off `FilePaths`:
 
 ```python
 from myanalysis import FilePaths
 
-ds = FilePaths.dataset("pbmc3k")     # .root .raw .processed .resources .results
-ds.create()                          # idempotent; call it in the writer, not at import
-adata.write_h5ad(ds.processed / "adata.h5ad")
+FilePaths.DATA           # data/
+FilePaths.FIGURES        # figures/ — curated output: talk and paper figures
+FilePaths.EXAMPLE_DATASET / "processed" / "adata.h5ad"
 ```
 
-`FilePaths.ROOT` is the repository root, resolved from git so it names the *main* checkout
-even when called from a worktree; `FilePaths.DATA` and `FilePaths.FIGURES` hang off it. Add a
-dataset by calling `FilePaths.dataset("<name>")` — `_constants.py` only needs editing to change
-the shared layout itself.
-
-`FilePaths.FIGURES` is for **curated** output: figures chosen for a talk or a paper.
+`FilePaths.ROOT` is resolved from git, so it names the *main* checkout even when called from a
+worktree and shared data does not follow your branch. Add a dataset as a constant in
+`_constants.py`; each one keeps the `{raw,processed,resources,results}` layout by convention.
 
 ## Environments
 

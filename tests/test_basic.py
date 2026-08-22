@@ -16,10 +16,10 @@ def test_package_has_version():
 
 
 def test_filepaths():
-    """Project root resolves, and the dataset accessor builds standard subpaths."""
+    """The root resolves to the checkout, and dataset constants hang off it."""
     assert (FilePaths.ROOT / "pixi.toml").exists()
-    ds = FilePaths.dataset("example_dataset")
-    assert ds.raw == FilePaths.DATA / "example_dataset" / "raw"
+    assert FilePaths.DATA == FilePaths.ROOT / "data"
+    assert FilePaths.EXAMPLE_DATASET == FilePaths.DATA / "example_dataset"
 
 
 def test_qc_violin():
