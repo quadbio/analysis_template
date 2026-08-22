@@ -37,8 +37,9 @@ the main checkout so they survive the worktree being removed. Both come from
 `task_paths(__file__)` — **never write a bare relative output path.** From a worktree that lands
 in the worktree, and since worktrees are gitignored, nothing will warn you.
 
-Batch jobs are the usual way this bites: `--output` resolves against the *submit* directory, so
-pass it absolutely (`slurm/submit.sh` does).
+Batch jobs are the usual way this bites: schedulers resolve a relative log path against the
+*submit* directory. Take the path from `task_paths(__file__).logs` and pass it absolutely. How
+your scheduler spells that is its own business, not this template's.
 
 The top-level `figures/` is for **curated** output — figures chosen for a talk or a paper — not
 for task output.

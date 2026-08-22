@@ -21,7 +21,7 @@ PATHS = task_paths(__file__)
 RESULTS = PATHS.results
 REPORTS = PATHS.reports
 
-#: Heavy or noisy: figures, data artifacts, Slurm logs. Gitignored, anchored to MAIN.
+#: Heavy or noisy: figures, data artifacts, batch-job logs. Gitignored, anchored to MAIN.
 FIGURES = PATHS.figures
 OUTPUTS = PATHS.outputs
 LOGS = PATHS.logs
