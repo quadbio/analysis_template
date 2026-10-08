@@ -1,0 +1,24 @@
+{
+    "extraKnownMarketplaces": {
+        "quadbio": {
+            "source": {
+                "source": "github",
+                "repo": "quadbio/claude-plugins"
+            }
+        }
+    },
+    "enabledPlugins": {
+        "analysis-workflow@quadbio": true
+    },
+    "permissions": {
+        "deny": [
+            "Bash(git add -A:*)",
+            "Bash(git add --all:*)",
+            "Bash(git reset --hard:*)",
+            "Bash(git clean -f:*)",
+            "Bash(git clean -fd:*)",
+            "Bash(git push --force:*)",
+            "Bash(git commit --no-verify:*)"
+        ]
+    }
+}

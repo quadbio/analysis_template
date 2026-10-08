@@ -83,14 +83,13 @@ Then finish by hand:
 
 ```bash
 pixi install                   # create environment from pixi.toml
-pixi run install-hooks         # pre-commit hooks + notebook output-stripping filter
+pixi run install-hooks         # pre-commit hooks
 pixi run install-kernel        # register Jupyter kernel
 ```
 
-> `install-hooks` also sets up the [nbstripout](https://github.com/kynan/nbstripout)
-> git filter. Notebook outputs are then stripped from commits automatically while
-> staying in your working copy. **Run it once in every clone** (including remote
-> servers and worktrees), or outputs may slip into git.
+> **Notebook outputs are committed.** They are the record of what a notebook actually
+> produced, and GitHub renders them. Keep them small: clear a notebook by hand before
+> committing if it carries a huge embedded image or an accidental dump.
 
 💡 **Tip**: Use `pixi shell` to enter the environment interactively—then you can run commands directly without the `pixi run` prefix.
 
@@ -123,6 +122,23 @@ git push
 - **New notebooks**: Copy `analysis/XX-2026-01-27_sample_notebook.ipynb` as a starting point. Follow the naming convention: `[INITIALS]-[YYYY]-[MM]-[DD]_description.ipynb`.
 - **Add your data**: Create folders under `data/` and register paths in `src/<your-package>/_constants.py`.
 - **Replace this README** with your project documentation once you're set up.
+
+---
+
+## 🤖 Working with coding agents
+
+Humans work in notebooks; coding agents work in scripts, one task per session, git worktree and
+`analysis/<topic>/.../<name>_vN/` directory. The conventions come from the
+[analysis-workflow](https://github.com/quadbio/analysis-workflow) Claude Code plugin, which this
+repo enables in `.claude/settings.json`. Install it once per machine:
+
+```bash
+claude plugin marketplace add quadbio/claude-plugins
+claude plugin install analysis-workflow@quadbio
+```
+
+Its package (`analysis_workflow`: task paths, additive write-back to AnnData zarr stores) is
+already in `pixi.toml`. Review agents on GitHub read [`REVIEW_GUIDE.md`](REVIEW_GUIDE.md).
 
 ---
 
@@ -187,12 +203,12 @@ Or edit `pixi.toml` directly and run `pixi install`.
 <summary><strong>📓 Data and notebook conventions</strong></summary>
 
 - **Notebook naming**: `[INITIALS]-[YYYY]-[MM]-[DD]_description.ipynb`
-- **Data layout** (one folder per dataset):
-    - `data/<dataset>/raw/` — original data files
-    - `data/<dataset>/processed/` — preprocessed data
-    - `data/<dataset>/resources/` — reference data, annotations
-    - `data/<dataset>/results/` — analysis outputs
-- **Figures**: `figures/` or `data/<dataset>/results/`
+- **Data layout** (one folder per dataset, gitignored):
+    - `data/<dataset>/raw/` — bytes as they arrived; never written by analysis
+    - `data/<dataset>/resources/` — curated inputs that are not data: gene lists, marker tables
+    - `data/<dataset>/processed/` — objects code loads to do new work, as AnnData `.zarr`
+    - `data/<dataset>/results/` — a notebook's own outputs, file names prefixed with the notebook's stem
+- **Figures**: `figures/<topic>/`
 - **Import paths** via the local package:
 
 ```python
@@ -211,13 +227,6 @@ This template uses **pre-commit hooks** to automatically check your code before 
 | [Ruff](https://docs.astral.sh/ruff/) | Lints and formats Python code + notebooks |
 | [Biome](https://biomejs.dev/) | Formats JSON/JSONC files |
 | [pyproject-fmt](https://github.com/tox-dev/pyproject-fmt) | Formats `pyproject.toml` |
-
-**Notebook outputs** are handled separately by an [nbstripout](https://github.com/kynan/nbstripout)
-git *filter* (not a pre-commit hook), set up by `pixi run install-hooks`. The filter
-strips outputs from the committed copy while leaving them in your working tree, so
-your notebooks stay rendered locally but git history stays clean. CI fails the build
-if a notebook with outputs ever lands in the repo (a clone that skipped
-`install-hooks`), via `nbstripout --verify`.
 
 Hooks run automatically on `git commit`. To run manually:
 
