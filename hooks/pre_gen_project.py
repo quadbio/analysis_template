@@ -11,8 +11,13 @@ TOML_VALUES = {
     "author_email": r"""{{ cookiecutter.author_email }}""",
 }
 
-if not PACKAGE_NAME.isidentifier() or keyword.iskeyword(PACKAGE_NAME):
-    sys.exit(f"ERROR: package_name {PACKAGE_NAME!r} is not a valid Python identifier.")
+# An identifier, and with `_` as `-` a valid distribution name: ASCII, letter first, letter or digit last.
+if (
+    not PACKAGE_NAME.isidentifier()
+    or keyword.iskeyword(PACKAGE_NAME)
+    or not (PACKAGE_NAME.isascii() and PACKAGE_NAME[0].isalpha() and PACKAGE_NAME[-1].isalnum())
+):
+    sys.exit(f"ERROR: package_name {PACKAGE_NAME!r} must be an ASCII identifier starting with a letter and ending with a letter or digit.")
 for key, value in TOML_VALUES.items():
     if '"' in value or "\\" in value:
         sys.exit(f"ERROR: {key} may not contain double quotes or backslashes.")
