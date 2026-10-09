@@ -59,7 +59,7 @@ session-info2 = "*"
 # Local editable package for path helpers
 {{ cookiecutter.package_name | replace('_', '-') }} = { path = ".", editable = true }
 # Task paths and additive write-back for agent-run tasks (README: "Working with coding agents")
-analysis-workflow = { git = "https://github.com/quadbio/analysis-workflow", tag = "v0.1.0" }
+analysis-workflow = { git = "https://github.com/quadbio/analysis-workflow", tag = "v0.1.1" }
 igraph = ">=1.0.0, <2"
 celltypist = ">=1.7.1, <2"
 
