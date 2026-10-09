@@ -19,7 +19,7 @@ environment specifics, companion code packages. Rules the plugin owns are not re
 - **Paths**: every dataset path hangs off `FilePaths` in `src/<package>/_constants.py`:
 
 ```python
-from myanalysis import FilePaths
+from {{ cookiecutter.package_name }} import FilePaths
 
 FilePaths.EXAMPLE_DATASET / "processed" / "adata.zarr"
 ```

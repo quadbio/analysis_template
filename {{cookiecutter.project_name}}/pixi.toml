@@ -1,16 +1,15 @@
 [workspace]
-name = "analysis-template"
+name = "{{ cookiecutter.project_name }}"
 version = "0.1.0"
-description = "Template for single-cell/spatial analysis projects (pixi-managed)"
-authors = ["Your Name <your.email@example.com>"]
+description = "{{ cookiecutter.project_description }}"
+authors = ["{{ cookiecutter.author_full_name }} <{{ cookiecutter.author_email }}>"]
 channels = ["conda-forge"]
 platforms = ["osx-arm64", "linux-64"]
 
 [tasks]
 lab = "jupyter lab"
 test = "pytest"
-rename = { cmd = "python scripts/rename_package.py", description = "Rename the placeholder package/project (run once on a fresh clone; see scripts/rename_package.py)" }
-install-kernel = "python -m ipykernel install --user --name=analysis-template --display-name='Analysis Template (Pixi)'"
+install-kernel = "python -m ipykernel install --user --name={{ cookiecutter.project_name }} --display-name='{{ cookiecutter.project_name }} (pixi)'"
 install-hooks = { cmd = "pre-commit install --install-hooks", description = "Install pre-commit hooks (run once per clone)" }
 
 [dependencies]
@@ -58,7 +57,7 @@ pytest = "*"
 session-info2 = "*"
 
 # Local editable package for path helpers
-myanalysis = { path = ".", editable = true }
+{{ cookiecutter.package_name }} = { path = ".", editable = true }
 # Task paths and additive write-back for agent-run tasks (README: "Working with coding agents")
 analysis-workflow = { git = "https://github.com/quadbio/analysis-workflow", tag = "v0.1.0" }
 igraph = ">=1.0.0, <2"

@@ -3,7 +3,7 @@ build-backend = "hatchling.build"
 requires = [ "hatch-vcs", "hatchling" ]
 
 [project]
-name = "myanalysis"
+name = "{{ cookiecutter.package_name }}"
 # Minimal metadata - project info lives in pixi.toml
 # Only the package name matters here (must match src/NAME/ directory)
 readme = "README.md"
@@ -87,3 +87,7 @@ xfail_strict = true
 addopts = [
   "--import-mode=importlib", # allow using test files with same name
 ]
+
+[tool.cruft]
+# Project-owned after creation: `cruft update` leaves these alone.
+skip = [ "analysis", "data", "src", "tests" ]

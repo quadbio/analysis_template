@@ -33,3 +33,10 @@ repos:
       - id: trailing-whitespace
       - id: check-case-conflict
       - id: check-merge-conflict
+  - repo: local
+    hooks:
+      - id: forbid-rej
+        name: no *.rej files left by cruft update
+        entry: resolve the conflict by hand, then delete the .rej file
+        language: fail
+        files: \.rej$

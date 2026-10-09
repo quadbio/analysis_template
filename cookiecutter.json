@@ -1,0 +1,15 @@
+{
+    "project_name": "my-analysis",
+    "package_name": "{{ cookiecutter.project_name | lower | replace('-', '_') }}",
+    "project_description": "Single-cell analysis project",
+    "author_full_name": "Your Name",
+    "author_email": "yourname@example.com",
+    "_copy_without_render": [".github/workflows/*.yaml"],
+    "__prompts__": {
+        "project_name": "Repository name, e.g. my-analysis",
+        "package_name": "Python import name of the local package",
+        "project_description": "One-line description",
+        "author_full_name": "Your full name",
+        "author_email": "Your e-mail address"
+    }
+}
