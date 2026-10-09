@@ -4,15 +4,15 @@ import numpy as np
 import pytest
 from matplotlib.figure import Figure
 
-import myanalysis
-from myanalysis import FilePaths, qc_violin
+import {{ cookiecutter.package_name }}
+from {{ cookiecutter.package_name }} import FilePaths, qc_violin
 
 # Headless backend so plotting works in CI.
 matplotlib.use("Agg")
 
 
 def test_package_has_version():
-    assert myanalysis.__version__ is not None
+    assert {{ cookiecutter.package_name }}.__version__ is not None
 
 
 def test_filepaths():

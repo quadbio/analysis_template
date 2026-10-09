@@ -1,4 +1,4 @@
-name: Tests
+name: Template
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    # Run weekly on Mondays at 6:00 UTC
+    # Weekly, to catch upstream releases that break a freshly created project
     - cron: "0 6 * * 1"
 
 concurrency:
@@ -14,18 +14,25 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
-    name: Run pytest
+  generate:
+    name: Create a project and run its checks
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          filter: blob:none
-          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v6
+      - name: Create a project with the default answers
+        run: uvx cruft create . --no-input --output-dir "$RUNNER_TEMP"
+      - name: Put it under git, as the README's create steps do
+        working-directory: ${{ runner.temp }}/my-analysis
+        run: git init -q -b main && git add -A
       - uses: prefix-dev/setup-pixi@v0.8.0
         with:
           pixi-version: v0.60.0
-          cache: true
-          frozen: true
+          manifest-path: ${{ runner.temp }}/my-analysis/pixi.toml
+          cache: false
       - name: Run tests
+        working-directory: ${{ runner.temp }}/my-analysis
         run: pixi run test
+      - name: Run pre-commit
+        working-directory: ${{ runner.temp }}/my-analysis
+        run: pixi run pre-commit run --all-files
