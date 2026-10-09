@@ -127,18 +127,14 @@ git push
 
 ## 🤖 Working with coding agents
 
-Humans work in notebooks; coding agents work in scripts, one task per session, git worktree and
-`analysis/<topic>/.../<name>_vN/` directory. The conventions come from the
-[analysis-workflow](https://github.com/quadbio/analysis-workflow) Claude Code plugin, which this
-repo enables in `.claude/settings.json`. Install it once per machine:
+Agents follow [`AGENTS.md`](AGENTS.md) and the
+[analysis-workflow](https://github.com/quadbio/analysis-workflow) Claude Code plugin (a skill plus
+guard hooks) that this repo enables. Install the plugin once per machine:
 
 ```bash
 claude plugin marketplace add quadbio/claude-plugins
 claude plugin install analysis-workflow@quadbio
 ```
-
-Its package (`analysis_workflow`: task paths, additive write-back to AnnData zarr stores) is
-already in `pixi.toml`. Review agents on GitHub read [`REVIEW_GUIDE.md`](REVIEW_GUIDE.md).
 
 ---
 
