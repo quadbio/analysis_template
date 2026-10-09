@@ -150,8 +150,23 @@ dmypy.json
 *.gmt
 *.gmx
 
-# Directories to ignore
+*.zarr
+
+# Data never enters git; only its READMEs and placeholders do.
+data/**
+!data/**/
+!data/**/README.md
+!data/**/.gitkeep
+
+# Directories to ignore. Unanchored, so they also match inside every analysis task directory
+# (analysis/<topic>/.../<name>_vN/): the untracked half of a task, anchored to the main checkout.
 figures/
+outputs/
+logs/
+
+# A task's results/ (small evidence tables) is tracked even though *.csv / *.txt are ignored above.
+!analysis/**/results/**/*.csv
+!analysis/**/results/**/*.txt
 
 # OS specifics
 **.DS_Store

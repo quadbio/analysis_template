@@ -1,39 +1,36 @@
 # AGENTS.md — working conventions
 
-This file owns the working conventions and is the canonical guidance for any coding agent.
-`README.md` is the user-facing overview; anything documented there is referenced from here,
-never restated.
+This file is the canonical guidance for any coding agent. `README.md` is the user-facing overview;
+anything documented there is referenced from here, never restated.
 
-## Layout
+## Workflow
 
-- **Notebooks**: `analysis/[INITIALS]-[YYYY]-[MM]-[DD]_description.ipynb`
-- **Data**: `data/<dataset>/{raw,processed,resources,results}/`, gitignored
-- **Package**: `src/<package>/`, installed editable from the checkout
+The human and agent lanes, task lifecycle, output paths, `data/` layout, working objects and their
+write-back are owned by the [analysis-workflow](https://github.com/quadbio/analysis-workflow)
+plugin, enabled in `.claude/settings.json`: load its skill before writing analysis code, outputs or
+data. Pull requests are reviewed against [`REVIEW_GUIDE.md`](REVIEW_GUIDE.md).
 
-## Paths
+## This repo
 
-Never hardcode a path into `data/` or `figures/` — every path hangs off `FilePaths`:
+<!-- Replace with this project's facts: its datasets and where each working object lives,
+environment specifics, companion code packages. Rules the plugin owns are not restated here. -->
+
+- **Package**: `src/<package>/`, installed editable from the main checkout
+- **Paths**: every dataset path hangs off `FilePaths` in `src/<package>/_constants.py`:
 
 ```python
 from myanalysis import FilePaths
 
-FilePaths.DATA           # data/
-FilePaths.FIGURES        # figures/ — curated output: talk and paper figures
-FilePaths.EXAMPLE_DATASET / "processed" / "adata.h5ad"
+FilePaths.EXAMPLE_DATASET / "processed" / "adata.zarr"
 ```
-
-`FilePaths.ROOT` is resolved from git, so it names the *main* checkout even when called from a
-worktree and shared data does not follow your branch. Add a dataset as a constant in
-`_constants.py`; each one keeps the `{raw,processed,resources,results}` layout by convention.
 
 ## Environments
 
-Dependencies live in `pixi.toml`, not `pyproject.toml` — the latter carries package metadata and
-the test config. Run `pixi install` after pulling a change to `pixi.toml`, in the main checkout.
+Dependencies live in `pixi.toml`, not `pyproject.toml`, which carries package metadata and the
+test config.
 
 | Task | Command |
 | --- | --- |
 | Run Python | `pixi run python script.py` |
 | Run tests | `pixi run test` |
-| Add conda package | `pixi add <package>` |
-| Add PyPI package | `pixi add --pypi <package>` |
+| Add a conda / PyPI package | `pixi add <package>` / `pixi add --pypi <package>` |

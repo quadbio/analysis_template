@@ -1,6 +1,4 @@
 # Dataset structure
 
--   `raw`: Raw state of the data we received.
--   `processed`: Processed / intermediate data.
--   `resources`: Reference data, gene sets, annotations.
--   `results`: Any results we compute for this dataset.
+`raw/`, `resources/`, `processed/` and `results/`, as described under *Data and notebook
+conventions* in the top-level `README.md`.
