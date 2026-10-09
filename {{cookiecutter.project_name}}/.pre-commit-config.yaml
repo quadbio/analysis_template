@@ -10,6 +10,7 @@ repos:
     rev: v2.2.3
     hooks:
       - id: biome-format
+        exclude: ^\.cruft\.json$  # written by cruft in its own format
   - repo: https://github.com/tox-dev/pyproject-fmt
     rev: v2.6.0
     hooks:

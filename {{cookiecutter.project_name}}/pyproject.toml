@@ -3,9 +3,9 @@ build-backend = "hatchling.build"
 requires = [ "hatch-vcs", "hatchling" ]
 
 [project]
-name = "{{ cookiecutter.package_name }}"
+name = "{{ cookiecutter.package_name | replace('_', '-') }}"
 # Minimal metadata - project info lives in pixi.toml
-# Only the package name matters here (must match src/NAME/ directory)
+# Only the name matters here: with `-` read as `_`, it must match the src/NAME/ directory
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.12"
@@ -90,4 +90,4 @@ addopts = [
 
 [tool.cruft]
 # Project-owned after creation: `cruft update` leaves these alone.
-skip = [ "analysis", "data", "src", "tests" ]
+skip = [ "README.md", "analysis", "data", "src", "tests" ]

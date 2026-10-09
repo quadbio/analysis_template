@@ -29,9 +29,9 @@ uvx cruft check                # is this project behind the template?
 uvx cruft update               # apply the template's changes since the last update
 ```
 
-Resolve conflicts and any `*.rej` files by hand; pre-commit refuses to commit either. `analysis/`, `data/`,
-`src/` and `tests/` belong to the project once created, and updates leave them alone (`[tool.cruft] skip` in
-its `pyproject.toml`).
+Resolve conflicts and any `*.rej` files by hand; pre-commit refuses to commit either. `README.md`,
+`analysis/`, `data/`, `src/` and `tests/` belong to the project once created, and updates leave them alone
+(`[tool.cruft] skip` in its `pyproject.toml`).
 
 A repo created before this template used cruft starts receiving updates with
 `uvx cruft link https://github.com/quadbio/analysis_template`.

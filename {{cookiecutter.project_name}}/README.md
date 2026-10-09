@@ -2,7 +2,7 @@
 
 {{ cookiecutter.project_description }}
 
-<!-- Describe the project here. The sections below come from quadbio/analysis_template and update with `cruft update`. -->
+<!-- This README is the project's own: `cruft update` leaves it alone, so describe the project here and edit freely. -->
 
 ---
 
