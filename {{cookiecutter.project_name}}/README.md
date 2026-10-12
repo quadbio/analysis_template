@@ -86,13 +86,9 @@ In Jupyter Lab, check that your kernel appears (look for `{{ cookiecutter.projec
 ## 🤖 Working with coding agents
 
 Agents follow [`AGENTS.md`](AGENTS.md) and the
-[analysis-workflow](https://github.com/quadbio/analysis-workflow) Claude Code plugin (a skill plus
-guard hooks) that this repo enables. Install the plugin once per machine:
-
-```bash
-claude plugin marketplace add quadbio/claude-plugins
-claude plugin install analysis-workflow@quadbio
-```
+[analysis-workflow](https://github.com/quadbio/analysis-workflow) Claude Code plugin, which this repo
+enables. [Its README](https://github.com/quadbio/analysis-workflow#use) covers installing it once per
+machine and starting each analysis task with `claude --worktree <task>`.
 
 ---
 
