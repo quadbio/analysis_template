@@ -11,6 +11,7 @@
         "analysis-workflow@quadbio": true
     },
     "permissions": {
+        "additionalDirectories": ["../{{ cookiecutter.project_name }}-lock"],
         "deny": [
             "Bash(git add -A:*)",
             "Bash(git add --all:*)",
