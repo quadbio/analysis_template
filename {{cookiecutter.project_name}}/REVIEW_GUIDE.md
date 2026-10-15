@@ -40,8 +40,10 @@ where it went and that it was agreed, while moving it is still cheap.
 
 ### 3. The task contract
 
-Agent work belongs in a task directory `analysis/<topic>/.../<name>_vN/` with a `README.md` naming real inputs,
-outputs and write-back keys. Outputs go through `task_paths(__file__)` to the task's own `results/`, `reports/`,
+Agent work belongs in a task directory `analysis/<topic>/.../<name>_vN/` whose `README.md` records the
+deliverables agreed with the human, real inputs, decisions and who took them, write-back keys, and every PR and
+issue the session opened. An edit to an earlier task's directory is a finding: a later version names the one it
+follows instead. Outputs go through `task_paths(__file__)` to the task's own `results/`, `reports/`,
 `figures/`, `outputs/`. Writes to `data/<dataset>/results/` or the central `figures/` are the human lane and are a
 finding.
 
@@ -50,9 +52,9 @@ unrecorded key can't be traced back, an unsuffixed one collides with the next ve
 
 ### 4. Scientific correctness
 
-The point of the repo. Check that the claim in the PR body follows from what the code computes: the right cells,
-the right grouping, a control where one is needed, and a comparison not confounded by condition, time point,
-sample or batch. A number that reaches a figure is worth more scrutiny than anything below.
+The point of the repo. Check that each finding in the deliverables follows from what the code computes: the right
+cells, the right grouping, a control where one is needed, and a comparison not confounded by condition, time
+point, sample or batch. A number that reaches a deliverable is worth more scrutiny than anything below.
 
 ### 5. Reinvention
 
@@ -68,7 +70,8 @@ task is fine.
 
 Prose is reviewed like code. READMEs, docstrings, comments and the PR body: no restating the diff, no filler
 preamble, no exhaustive caveats. Padding rots the same way dead code does, and these docs are load-bearing for
-the next agent.
+the next agent. Each fact has one home, the task README: a report or PR body that restates it instead of linking
+is a finding, because the copies drift.
 
 ## Do not report
 
