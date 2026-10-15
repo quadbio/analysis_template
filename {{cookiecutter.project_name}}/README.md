@@ -153,12 +153,9 @@ Or edit `pixi.toml` directly and run `pixi install`.
 <summary><strong>📓 Data and notebook conventions</strong></summary>
 
 - **Notebook naming**: `[INITIALS]-[YYYY]-[MM]-[DD]_description.ipynb`
-- **Data layout** (one folder per dataset, gitignored):
-    - `data/<dataset>/raw/` — bytes as they arrived; never written by analysis
-    - `data/<dataset>/resources/` — curated inputs that are not data: gene lists, marker tables
-    - `data/<dataset>/processed/` — objects code loads to do new work, as AnnData `.zarr`
-    - `data/<dataset>/results/` — a notebook's own outputs, file names prefixed with the notebook's stem
-- **Figures**: `figures/<topic>/`
+- **Data layout and the notebook lane**: the analysis-workflow skill's
+  [Data](https://github.com/quadbio/analysis-workflow/blob/main/skills/analysis-workflow/SKILL.md#data) and
+  [Two lanes](https://github.com/quadbio/analysis-workflow/blob/main/skills/analysis-workflow/SKILL.md#two-lanes)
 - **Import paths** via the local package:
 
 ```python
