@@ -35,8 +35,8 @@ A write to a working object goes through `commit_adata`, gated behind a dry run.
 ### 2. Promotions, which leave no diff
 
 `data/` is gitignored, so an object written into `data/<dataset>/processed/` appears nowhere in the diff; the task
-README's `Write-back` section is the only trace. The right subdirectory is not guessable. Check that the PR *says*
-where it went and that it was agreed, while moving it is still cheap.
+README's `Write-back` section is the only trace. The right subdirectory is not guessable. Check that the README
+*says* where it went, that the PR body flags it for sign-off and that it was agreed, while moving it is still cheap.
 
 ### 3. The task contract
 
