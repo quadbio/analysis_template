@@ -34,3 +34,6 @@ test config.
 | Run Python | `pixi run python script.py` |
 | Run tests | `pixi run test` |
 | Add a conda / PyPI package | `pixi add <package>` / `pixi add --pypi <package>` |
+
+The `gpu` environment (Linux with NVIDIA) adds rapids-singlecell: use it over scanpy for neighbors, UMAP and
+clustering on more than about 100k cells, in a GPU job.
