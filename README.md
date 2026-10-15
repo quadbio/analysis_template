@@ -33,8 +33,9 @@ Resolve conflicts and any `*.rej` files by hand; pre-commit refuses to commit ei
 `analysis/`, `data/`, `src/` and `tests/` belong to the project once created, and updates leave them alone
 (`[tool.cruft] skip` in its `pyproject.toml`).
 
-A repo created before this template used cruft starts receiving updates with
-`uvx cruft link https://github.com/quadbio/analysis_template`.
+A repo created before this template used cruft is linked once with
+`uvx cruft link https://github.com/quadbio/analysis_template`. At its commit prompt, enter the template commit
+whose files the repo last matched, not the default latest; `cruft update` then applies everything since.
 
 ## Develop the template
 
