@@ -67,9 +67,10 @@ fine.
 
 Prose is reviewed like code. READMEs, docstrings, comments and the PR body: no restating the diff, no filler
 preamble, no exhaustive caveats. Padding rots the same way dead code does, and these docs are load-bearing for
-the next agent. Each fact is written once: a PR's details in its body, laid out by
-`.github/pull_request_template.md`; the task README an overview with a short summary of each PR; findings in the
-deliverables. A file that restates another instead of linking to it is a finding, because the copies drift.
+the next agent. Among the files that keep changing, each fact is written once: findings in the deliverables, the
+overview in the task README, which gives each PR a short summary. A PR's body, laid out by
+`.github/pull_request_template.md`, is its record as of the merge and may state what the deliverables showed then. A
+living file that restates another instead of linking to it is a finding, because the copies drift.
 
 ## Do not report
 
