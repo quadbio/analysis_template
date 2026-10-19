@@ -73,9 +73,10 @@ celltypist = ">=1.7.1, <2"
 extra-index-urls = ["https://pypi.nvidia.com"]
 
 [feature.gpu.target.linux-64.pypi-dependencies]
-# `rapids-cu12` extra pulls cuml/cupy/cudf from pypi.nvidia.com; without it
-# rapids-singlecell installs without the GPU libs and silently runs on CPU.
-rapids-singlecell = { version = ">=0.15, <0.16", extras = ["rapids-cu12"] }
+# The `-cu12` package ships the wheels; `rapids-singlecell` itself is an sdist whose build needs nvcc.
+# `rapids` extra pulls cuml/cupy/cudf from pypi.nvidia.com; without it rapids-singlecell
+# installs without the GPU libs and silently runs on CPU.
+rapids-singlecell-cu12 = { version = ">=0.15, <0.16", extras = ["rapids"] }
 jax = { version = "<0.9.0", extras = ["cuda12"] }
 
 [environments]
