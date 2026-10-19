@@ -9,7 +9,7 @@ platforms = ["osx-arm64", "linux-64"]
 [tasks]
 lab = "jupyter lab"
 test = "pytest"
-install-kernel = "python -m ipykernel install --user --name={{ cookiecutter.project_name }} --display-name='{{ cookiecutter.project_name }} (pixi)'"
+install-kernel = 'python -m ipykernel install --user --name={{ cookiecutter.project_name }}-$PIXI_ENVIRONMENT_NAME --display-name="{{ cookiecutter.project_name }} (pixi, $PIXI_ENVIRONMENT_NAME)"'
 install-hooks = { cmd = "pre-commit install --install-hooks", description = "Install pre-commit hooks (run once per clone)" }
 
 [dependencies]
