@@ -16,6 +16,9 @@ install-hooks = { cmd = "pre-commit install --install-hooks", description = "Ins
 python = "3.12.*"
 # Pin numpy to avoid conda/pypi conflicts with numba
 numpy = ">=2.0,<2.2"
+# conda-forge's BLAS switch. Unpinned, the solver picked BLIS with netlib LAPACK on Linux, where small linear algebra
+# ran ~100x slower on a loaded node.
+libblas = { version = "*", build = "*openblas" }
 
 # CellRank accelerated linear algebra (PETSc/SLEPc)
 # Pre-built from conda-forge; PyPI wheels require building from source
