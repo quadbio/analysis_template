@@ -69,7 +69,7 @@ pixi run test                  # should pass (tests your package imports correct
 pixi run lab                   # opens Jupyter Lab
 ```
 
-In Jupyter Lab, check that your kernel appears (look for `{{ cookiecutter.project_name }} (pixi)`).
+In Jupyter Lab, check that your kernel appears (look for `{{ cookiecutter.project_name }} (pixi, default)`).
 
 🎉 **You're ready to start analyzing!**
 
