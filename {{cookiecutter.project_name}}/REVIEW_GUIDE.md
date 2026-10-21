@@ -39,12 +39,12 @@ README's `Write-back` section is the only trace. The right subdirectory is not g
 
 ### 3. The task contract
 
-Agent work belongs in a task directory `analysis/<topic>/.../<name>_vN/`. Check that its README's content is real:
-the actual input files, the deliverables agreed with the human, a short summary of each PR. An edit to an earlier
-task's directory is a finding: analysis moves forward, and a new version names the one it follows. A task is one
-branch merged through one or more PRs, so a directory whose earlier PRs (its README lists them) came from this PR's
-branch is this task's own, not an earlier one. Writes to `data/<dataset>/results/` or the central `figures/` are the
-human lane and are a finding.
+Agent work belongs in a task directory `analysis/<dataset>/<topic>/.../<name>_vN/`. Check that its README's content
+is real: the actual input files, the deliverables agreed with the human, a short summary of each PR. An edit to an
+earlier task's directory is a finding: analysis moves forward, and a new version names the one it follows. A task is
+one branch merged through one or more PRs, so a directory whose earlier PRs (its README lists them) came from this
+PR's branch is this task's own, not an earlier one. Writes to `data/<dataset>/results/` or the central `figures/`
+are the human lane and are a finding.
 
 Every key committed to a shared object carries the task's version suffix **and** appears in that README: an
 unrecorded key can't be traced back, an unsuffixed one collides with the next version.

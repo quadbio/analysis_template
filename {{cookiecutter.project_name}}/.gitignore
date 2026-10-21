@@ -159,7 +159,7 @@ data/**
 !data/**/.gitkeep
 
 # Directories to ignore. Unanchored, so they also match inside every analysis task directory
-# (analysis/<topic>/.../<name>_vN/): the untracked half of a task, anchored to the main checkout.
+# (analysis/<dataset>/<topic>/.../<name>_vN/): the untracked half of a task, anchored to the main checkout.
 **/figures/*
 !/figures/.gitkeep
 outputs/
