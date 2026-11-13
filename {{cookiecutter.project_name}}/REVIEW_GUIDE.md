@@ -5,7 +5,8 @@ PR review playbook for **review agents running on GitHub**. Imperative voice.
 **Scope: review only.** Comment and suggest. Do not push commits or apply fixes.
 
 > Everything above "This repo" comes from the analysis template; change it there and pull it with `cruft update`.
-> It tells reviewers, who cannot load the analysis-workflow plugin, what to check of its rules.
+> It tells reviewers, who cannot load the analysis-workflow plugin, what to check of `CONVENTIONS.md` and the
+> plugin's rules. A PR's task directory says its lane: `human_…` or `agent_…`.
 
 The code has usually already run. That is not a reason to lower the bar: requiring a rerun in better shape is a
 normal outcome. Say what to redo, not just what was wrong.
@@ -27,27 +28,25 @@ A write to a working object goes through `commit_adata`, gated behind a dry run.
 
 - an in-memory AnnData written back over a working object (`write_zarr`/`write_h5ad` onto its path): it erases
   whatever other sessions added since it was read;
-- a recomputed key committed under an existing name: `commit_adata` writes only keys not yet on disk, so it is a
-  no-op and the PR reports a result the object doesn't hold. Use a new key or a new dated copy;
 - a replaced SpatialData image, labels, points or shapes element, where a new element name would do.
 
 ### 2. Promotions, which leave no diff
 
 `data/` is gitignored, so an object written into `data/<dataset>/processed/` appears nowhere in the diff; the task
 README's `Write-back` section is the only trace. The right subdirectory is not guessable. Check that the README
-*says* where it went, that the PR body flags it for sign-off and that it was agreed, while moving it is still cheap.
+*says* where it went and, for an agent's PR, that the PR body flags it for sign-off and that it was agreed, while
+moving it is still cheap.
 
 ### 3. The task contract
 
-Agent work belongs in a task directory `analysis/<dataset>/<topic>/.../<name>_vN/`. Check that its README's content
-is real: the actual input files, the deliverables agreed with the human, a short summary of each PR. An edit to an
-earlier task's directory is a finding: analysis moves forward, and a new version names the one it follows. A task is
-one branch merged through one or more PRs, so a directory whose earlier PRs (its README lists them) came from this
-PR's branch is this task's own, not an earlier one. Writes to `data/<dataset>/results/` or the central `figures/`
-are the human lane and are a finding.
+Work belongs in a task directory `analysis/<dataset>/<topic>/.../<lane>_<name>_vN/`. Check that its README's
+content is real: the actual input files, the deliverables, a short summary of each PR. An edit to a frozen task's
+directory (one written back from, or merged) is a finding: analysis moves forward, and a new version names the one
+it follows. A task is one branch merged through one or more PRs, so a directory whose earlier PRs (its README lists
+them) came from this PR's branch is this task's own, not an earlier one. Outputs written outside the task directory,
+other than to a shared object, are a finding.
 
-Every key committed to a shared object carries the task's version suffix **and** appears in that README: an
-unrecorded key can't be traced back, an unsuffixed one collides with the next version.
+Every key committed to a shared object appears in that README: an unrecorded key can't be traced back.
 
 ### 4. Scientific correctness
 
@@ -80,9 +79,9 @@ living file that restates another instead of linking to it is a finding, because
 - Lock files, and anything under `data/`.
 - Committed notebook outputs: review changed cells' code, never the output blobs.
 - Absolute paths built from `main_checkout()`: task outputs are anchored there deliberately.
-- A task directory's layout and its README's headings: a hook holds them to the plugin's task template.
-- Worktree, temp-dir and cwd-relative `data/`/`figures/` path literals in `analysis/` code: a hook blocks them
-  before the file is written.
+- In an `agent_` task: its layout and its README's headings, which a hook holds to the task template; and
+  worktree, temp-dir and cwd-relative `data/`/`figures/` path literals, which a hook blocks before the file is
+  written. A `human_` task has no such hook: report these there.
 
 ## Drift older than the diff
 

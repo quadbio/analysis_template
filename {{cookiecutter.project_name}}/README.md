@@ -77,9 +77,17 @@ In Jupyter Lab, check that your kernel appears (look for `{{ cookiecutter.projec
 
 ## 📊 Start Your Analysis
 
-- **Demo notebook**: Check out `analysis/ML-2026-01-27_demo_scRNA_workflow.ipynb` for a complete scRNA-seq workflow example using scanpy's PBMC 3k dataset.
-- **New notebooks**: Copy `analysis/XX-2026-01-27_sample_notebook.ipynb` as a starting point. Follow the naming convention: `[INITIALS]-[YYYY]-[MM]-[DD]_description.ipynb`.
-- **Add your data**: Create folders under `data/` and register paths in `src/{{ cookiecutter.package_name }}/_constants.py`.
+Each piece of analysis gets its own task directory. Start one with a notebook in it:
+
+```bash
+pixi run analysis-workflow new analysis/<dataset>/<topic>/human_<name>_v1 --author <your initials> --notebook 01_<step>
+```
+
+- **How it fits together**: [`CONVENTIONS.md`](CONVENTIONS.md): task directories, where outputs go, `data/`, and
+  writing to a shared working object.
+- **Demo**: `analysis/example_dataset/demo/human_scrna_workflow_v1/` runs a complete scRNA-seq workflow on scanpy's
+  PBMC 3k dataset.
+- **Add your data**: create `data/<dataset>/` and register its path in `src/{{ cookiecutter.package_name }}/_constants.py`.
 
 ---
 
@@ -146,21 +154,6 @@ Or edit `pixi.toml` directly and run `pixi install`.
 💡 **Tip**: Prefer PyPI packages when available — mixing conda and pip can cause dependency conflicts.
 
 👉 See [pixi documentation](https://pixi.sh/latest/) for more details.
-
-</details>
-
-<details>
-<summary><strong>📓 Data and notebook conventions</strong></summary>
-
-- **Notebook naming**: `[INITIALS]-[YYYY]-[MM]-[DD]_description.ipynb`
-- **Data layout and the notebook lane**: the analysis-workflow skill's
-  [Data](https://github.com/quadbio/analysis-workflow/blob/main/skills/analysis-workflow/SKILL.md#data) and
-  [Two lanes](https://github.com/quadbio/analysis-workflow/blob/main/skills/analysis-workflow/SKILL.md#two-lanes)
-- **Import paths** via the local package:
-
-```python
-from {{ cookiecutter.package_name }} import FilePaths
-```
 
 </details>
 

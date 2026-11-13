@@ -5,10 +5,12 @@ anything documented there is referenced from here, never restated.
 
 ## Workflow
 
-The human and agent lanes, task lifecycle, output paths, `data/` layout, working objects and their
-write-back are owned by the [analysis-workflow](https://github.com/quadbio/analysis-workflow)
-plugin, enabled in `.claude/settings.json`: load its skill before writing analysis code, outputs or
-data. Pull requests are reviewed against [`REVIEW_GUIDE.md`](REVIEW_GUIDE.md).
+Task directories, output paths, the `data/` layout and working objects follow
+[`CONVENTIONS.md`](CONVENTIONS.md), for humans and agents alike. What only agents do (a worktree, a session and a
+PR per task, sign-off on every write-back) comes from the
+[analysis-workflow](https://github.com/quadbio/analysis-workflow) plugin, enabled in `.claude/settings.json`: load
+its skill before writing analysis code, outputs or data. Pull requests are reviewed against
+[`REVIEW_GUIDE.md`](REVIEW_GUIDE.md).
 
 ## This repo
 
