@@ -80,6 +80,8 @@ tasks accumulate.
 
 - Never write an in-memory object over a working object: it erases what others added since you read it. Changing
   or removing a key means a new dated copy.
+- Create one with `adata.write_zarr(path, consolidate_metadata=False)`, at a path that doesn't exist yet. Readers of
+  a consolidated store never see keys added later, so `commit_adata` refuses one.
 - Give keys descriptive names, and list each in the task README's Write-back section.
 - Labels: one categorical `obs` column, colours in `uns["<key>_colors"]`.
 - A result that would grow the object materially (`analyze_anndata_size`) becomes a standalone AnnData on the same
