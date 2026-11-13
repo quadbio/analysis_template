@@ -1,8 +1,9 @@
 # 🧬 analysis_template
 
 A [cruft](https://cruft.github.io/cruft/) template for notebook-first single-cell and spatial analysis
-repos, managed with [pixi](https://pixi.sh). Humans work in notebooks; coding agents follow the
-[analysis-workflow](https://github.com/quadbio/analysis-workflow) plugin, which every generated repo enables.
+repos, managed with [pixi](https://pixi.sh). Humans and coding agents share one task layout, set out in each
+project's `CONVENTIONS.md`; agents also follow the [analysis-workflow](https://github.com/quadbio/analysis-workflow)
+plugin, which every generated repo enables.
 
 > Building a reusable Python library? Use the [scverse cookiecutter](https://github.com/scverse/cookiecutter-scverse) instead.
 

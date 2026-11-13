@@ -1,4 +1,4 @@
-"""Project-wide paths for notebooks and scripts."""
+"""Project-wide paths for notebooks and scripts; a task's own outputs come from ``analysis_workflow.task_paths``."""
 
 from analysis_workflow import main_checkout
 
@@ -12,6 +12,5 @@ class FilePaths:
     ROOT = main_checkout(__file__)
 
     DATA = ROOT / "data"
-    FIGURES = ROOT / "figures"
 
     EXAMPLE_DATASET = DATA / "example_dataset"
