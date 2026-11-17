@@ -31,6 +31,7 @@ All analysis lives in task directories, `analysis/<dataset>/<topic>/<lane>_<name
 | in a task | tracked | holds |
 | --- | --- | --- |
 | `README.md` | yes | the question, inputs, deliverables, write-back; kept current |
+| `inputs.yaml` | yes | the task's id, and what its code consumed, written by an agent (What an artifact rests on) |
 | `notebooks/` | yes | `NN_<step>.ipynb`, numbered in run order; outputs committed, so keep them small |
 | `scripts/` | yes | `NN_<step>.py`, numbered in run order; `_common.py` holds the task's paths |
 | `results/` | yes | small evidence tables; past ~1 MB they belong in `outputs/` |
@@ -59,8 +60,14 @@ fig.savefig(PATHS.figures / "umap.pdf")
 | `resources/` | curated inputs that are not data: gene lists, marker tables |
 | `processed/` | objects other tasks load: working objects in `working/`, others in descriptively named subdirectories |
 
-A task writes into its own directory. An object other tasks will load goes to `processed/` (for an agent, after
-sign-off), and the task README records its path.
+A task writes into its own directory, and so do the external tools and shell scripts it runs. An object other
+tasks will load goes to `processed/` (for an agent, after sign-off), and the task README records its path.
+
+Every write into `processed/` sits in a `writes` block: a notebook cell that starts `%%writes <path>`, or
+`with writes(<path>):` in a script, where `<path>` is the store. It records in the store which task wrote what
+(`adata.uns["provenance"]`, `sdata.attrs["provenance"]`). That goes for a write-back, a new object, a new
+SpatialData element and a copy out of a task's `outputs/`. Stores only grow: nothing in one is replaced or removed
+in place. A plain file under `data/` carries no such record.
 
 ## Working objects
 
@@ -75,17 +82,36 @@ tasks accumulate.
   from analysis_workflow import commit_adata
 
   commit_adata(adata, path, keys={"obs": ["leiden_fine"]})            # dry run: shows what it would write
+  ```
+
+  ```python
+  %%writes path
   commit_adata(adata, path, keys={"obs": ["leiden_fine"]}, yes=True)  # writes
   ```
 
 - Never write an in-memory object over a working object: it erases what others added since you read it. Changing
-  or removing a key means a new dated copy.
-- Create one with `adata.write_zarr(path, consolidate_metadata=False)`, at a path that doesn't exist yet. Readers of
-  a consolidated store never see keys added later, so `commit_adata` refuses one.
-- Give keys descriptive names, and list each in the task README's Write-back section.
+  or removing a key means a new dated copy. In it a key may be dropped; one whose values change gets a new name,
+  so a name stands for the same values in every copy.
+- Create one with `adata.write_zarr(path, consolidate_metadata=False)` in a `writes` block, at a path that doesn't
+  exist yet. Readers of a consolidated store never see keys added later, so `commit_adata` refuses one.
+- Give keys descriptive names, and say what each holds in the task README's Write-back section.
 - Labels: one categorical `obs` column, colours in `uns["<key>_colors"]`.
 - A result that would grow the object materially (`analyze_anndata_size`) becomes a standalone AnnData on the same
   `obs_names`, never a bare `.npy`.
+
+## What an artifact rests on
+
+Two records answer it. A store records which task wrote each of its keys (Data, above). A task's `inputs.yaml`
+lists what its code consumed: stores with the keys used, other tasks' files, data files. The
+[analysis-workflow](https://github.com/quadbio/analysis-workflow) plugin's `declare-inputs` skill writes that list
+from the task's scripts and notebooks: when a task is finished, ask an agent in this repo to declare its inputs.
+
+```bash
+pixi run analysis-workflow trace <store> <key>      # or: trace <file>
+```
+
+then shows the tasks and artifacts a key or a file rests on, back to the raw data, and fails on a task whose
+inputs are not declared. The plugin's `trace-lineage` skill writes it up as a graph and a summary.
 
 ## Git
 

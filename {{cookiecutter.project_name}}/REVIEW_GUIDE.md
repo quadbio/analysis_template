@@ -19,6 +19,7 @@ code loads):
 - **Accumulate by addition.** Adding keys to freshly re-read state is commutative, so concurrent sessions can't
   lose each other's work. Removal isn't: that means a new dated copy.
 - **Writing back to a shared object needs sign-off on that specific diff.**
+- **Every write is recorded.** It sits in a `writes` block, which notes in the store which task wrote what.
 
 ## Priorities
 
@@ -28,25 +29,34 @@ A write to a working object goes through `commit_adata`, gated behind a dry run.
 
 - an in-memory AnnData written back over a working object (`write_zarr`/`write_h5ad` onto its path): it erases
   whatever other sessions added since it was read;
-- a replaced SpatialData image, labels, points or shapes element, where a new element name would do.
+- a replaced SpatialData image, labels, points or shapes element, where a new element name would do;
+- a write into `data/<dataset>/processed/` outside a `writes` block, a shell `cp` or `mv` among them: the store
+  then has no record of the task;
+- in a new dated copy, a key whose values changed under its old name.
 
 ### 2. Promotions, which leave no diff
 
-`data/` is gitignored, so an object written into `data/<dataset>/processed/` appears nowhere in the diff; the task
-README's `Write-back` section is the only trace. The right subdirectory is not guessable. Check that the README
+`data/` is gitignored, so an object written into `data/<dataset>/processed/` appears nowhere in the diff. The
+store records which task wrote it; where it went is in the task README's `Write-back` section. The right
+subdirectory is not guessable. Check that the README
 *says* where it went and, for an agent's PR, that the PR body flags it for sign-off and that it was agreed, while
 moving it is still cheap.
 
 ### 3. The task contract
 
 Work belongs in a task directory `analysis/<dataset>/<topic>/.../<lane>_<name>_vN/`. Check that its README's
-content is real: the actual input files, the deliverables, a short summary of each PR. An edit to a frozen task's
-directory (one written back from, or merged) is a finding: analysis moves forward, and a new version names the one
-it follows. A task is one branch merged through one or more PRs, so a directory whose earlier PRs (its README lists
+content is real: the deliverables, a short summary of each PR. An edit to a frozen task's directory (one written
+back from, or merged) is a finding, other than to its `inputs.yaml`: analysis moves forward, and a new version
+names the one it follows. A task is one branch merged through one or more PRs, so a directory whose earlier PRs (its README lists
 them) came from this PR's branch is this task's own, not an earlier one. Outputs written outside the task directory,
 other than to a shared object, are a finding.
 
-Every key committed to a shared object appears in that README: an unrecorded key can't be traced back.
+**Declared inputs.** Each task directory holds `inputs.yaml`: the stores, with the keys used, and the files its
+code consumes. Extract a task's inputs from its scripts and notebooks yourself, before reading its `inputs.yaml`:
+the keys of a shared store the code uses (not merely loads), including keys used through the defaults of functions
+it calls; files of other tasks; data files. Leave out what the task writes itself. Then compare. Report each input
+the code uses that the file lacks, and each entry the code does not use. A finished task without the list is a
+finding.
 
 ### 4. Scientific correctness
 

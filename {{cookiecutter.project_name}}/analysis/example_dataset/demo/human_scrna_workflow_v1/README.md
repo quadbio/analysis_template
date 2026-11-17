@@ -21,15 +21,16 @@ otherwise; a later change is recorded here too. -->
 
 ## Inputs
 
-<!-- The actual files, not concepts: this is what makes the task re-runnable. -->
+<!-- The working object and label keys agreed at the start, and why these. The full list of what the code
+consumed is in `inputs.yaml`, written by the `declare-inputs` skill when the task is finished. -->
 
 - scanpy's PBMC 3k dataset, downloaded to `data/example_dataset/raw/`
 - CellTypist's `Immune_All_High.pkl` model
 
 ## Write-back
 
-<!-- What went into a shared object, under which keys, and anything placed in `data/<dataset>/processed/` with its
-final path. -->
+<!-- What each key written to a shared object holds, and the final path of anything placed in
+`data/<dataset>/processed/`. Which task wrote a key is recorded in the store itself. -->
 
 - `data/example_dataset/processed/working/pbmc3k_2026-01-27.zarr`, a new working object, holding:
   - `obsm["X_scVI"]`, `obsm["X_umap"]`: scVI latent space and its UMAP
