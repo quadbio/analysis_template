@@ -1,5 +1,6 @@
-task: 5c1d9e42
+task: "5c1d9e42"
 # This task's id, set by `analysis-workflow new`, and what its code consumed, written by the `declare-inputs`
 # skill once the task is finished. Not edited by hand.
 inputs:
   - path: data/example_dataset/raw/pbmc3k_raw.h5ad
+  - path: ~/.celltypist/data/models/Immune_All_High.pkl
