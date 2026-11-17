@@ -19,14 +19,6 @@ otherwise; a later change is recorded here too. -->
 | UMAP overviews | `figures/` (gitignored) |
 | a new working object | Write-back, below |
 
-## Inputs
-
-<!-- The working object and label keys agreed at the start, and why these. The full list of what the code
-consumed is in `inputs.yaml`, written by the `declare-inputs` skill when the task is finished. -->
-
-- scanpy's PBMC 3k dataset, downloaded to `data/example_dataset/raw/`
-- CellTypist's `Immune_All_High.pkl` model
-
 ## Write-back
 
 <!-- What each key written to a shared object holds, and the final path of anything placed in

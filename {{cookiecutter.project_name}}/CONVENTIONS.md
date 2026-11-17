@@ -13,7 +13,7 @@ pixi run analysis-workflow new analysis/<dataset>/<topic>/human_<name>_v1 --auth
 ```
 
 This creates the task directory with its `README.md` and a starter notebook in `notebooks/`. Open the notebook,
-fill in the README's question and inputs, and work.
+fill in the README's question, and work.
 
 ## Tasks
 
@@ -30,7 +30,7 @@ All analysis lives in task directories, `analysis/<dataset>/<topic>/<lane>_<name
 
 | in a task | tracked | holds |
 | --- | --- | --- |
-| `README.md` | yes | the question, inputs, deliverables, write-back; kept current |
+| `README.md` | yes | the question, deliverables, write-back; kept current |
 | `inputs.yaml` | yes | the task's id, and what its code consumed, written by an agent (What an artifact rests on) |
 | `notebooks/` | yes | `NN_<step>.ipynb`, numbered in run order; outputs committed, so keep them small |
 | `scripts/` | yes | `NN_<step>.py`, numbered in run order; `_common.py` holds the task's paths |
