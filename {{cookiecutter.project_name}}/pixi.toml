@@ -28,6 +28,9 @@ slepc4py = "*"
 # Shapely from conda to avoid pygeos build issues
 shapely = "*"
 
+# Draws `analysis-workflow trace --format pdf`
+graphviz = "*"
+
 [pypi-dependencies]
 # Compatibility fix: cuML (rapids dependency) incompatible with sklearn 1.8
 # https://github.com/rapidsai/cuml/issues/6426

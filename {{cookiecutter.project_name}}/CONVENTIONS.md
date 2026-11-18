@@ -117,10 +117,12 @@ inputs once the task is finished.
 
 ```bash
 pixi run analysis-workflow trace <store> <key>      # or: trace <file>
+pixi run analysis-workflow trace <store> <key> --format pdf --output <file>.pdf
 ```
 
 then shows the tasks and artifacts a key or a file rests on, back to the raw data, and fails on a task whose
-inputs are not declared. The plugin's `trace-lineage` skill writes it up as a graph and a summary.
+inputs are not declared. The second form draws the tasks as a graph. The plugin's `trace-lineage` skill writes
+both up, as a graph and a summary.
 
 ## Exceptions
 
