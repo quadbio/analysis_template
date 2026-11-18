@@ -4,6 +4,9 @@
 
 <!-- This README is the project's own: `cruft update` leaves it alone, so describe the project here and edit freely. -->
 
+**Working in this repo?** Read [`CONVENTIONS.md`](CONVENTIONS.md) before the first task: it says how analysis is
+organized here, for humans and coding agents alike.
+
 ---
 
 ## 🚀 Getting Started
@@ -80,7 +83,7 @@ In Jupyter Lab, check that your kernel appears (look for `{{ cookiecutter.projec
 Each piece of analysis gets its own task directory. Start one with a notebook in it:
 
 ```bash
-pixi run analysis-workflow new analysis/<dataset>/<topic>/human_<name>_v1 --author <your initials> --notebook 01_<step>
+pixi run analysis-workflow new analysis/<dataset>/<topic>/human_<name>_v1 --notebook 01_<step>
 ```
 
 - **How it fits together**: [`CONVENTIONS.md`](CONVENTIONS.md): task directories, where outputs go, `data/`, and

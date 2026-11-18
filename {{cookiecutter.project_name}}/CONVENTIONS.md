@@ -1,19 +1,23 @@
 # Conventions
 
-How analysis is organized in this repo. Humans and coding agents follow the same rules; agents add their own on top
-(a worktree, a session and a PR per task, sign-off on every write-back), from the
-[analysis-workflow](https://github.com/quadbio/analysis-workflow) plugin.
+How analysis is organized in this repo, written for the humans working in it: everything here applies to a human's
+work. Coding agents follow the same rules and add their own on top (a worktree, a session and a PR per task, a
+human's sign-off on every write-back), from the [analysis-workflow](https://github.com/quadbio/analysis-workflow)
+plugin. Agents are mentioned here only where a human needs to know what they do.
 
 > Everything here comes from the analysis template; change it there and pull it with `cruft update`.
 
 ## Start a task
 
+A human starts a task with
+
 ```bash
-pixi run analysis-workflow new analysis/<dataset>/<topic>/human_<name>_v1 --author <your initials> --notebook 01_<step>
+pixi run analysis-workflow new analysis/<dataset>/<topic>/human_<name>_v1 --notebook 01_<step>
 ```
 
-This creates the task directory with its `README.md` and a starter notebook in `notebooks/`. Open the notebook,
-fill in the README's question, and work.
+which creates the task directory with its `README.md` and a starter notebook in `notebooks/`, then opens the
+notebook, fills in the README's question, and works. The README's author line takes the git user name;
+`--author <name>` sets another.
 
 ## Tasks
 
@@ -21,7 +25,7 @@ All analysis lives in task directories, `analysis/<dataset>/<topic>/<lane>_<name
 
 - `<dataset>` is there even when the repo has one dataset. Topics, such as `preprocessing/`, `annotation/` or
   `spatial/`, can mostly be worked on in any order.
-- `<lane>` is `human` or `agent`; the README's author line says who: initials, or the model.
+- `<lane>` is `human` or `agent`; the README's author line says who: a name, or the model.
 - `vN` counts the answers to one question across both lanes: `human_markers_v1` may be followed by
   `agent_markers_v2`. `analysis-workflow new` refuses any other version than the next.
 - A task is edited freely until its first write-back to a shared object or until other tasks read its outputs (for
@@ -61,7 +65,8 @@ fig.savefig(PATHS.figures / "umap.pdf")
 | `processed/` | objects other tasks load: working objects in `working/`, others in descriptively named subdirectories |
 
 A task writes into its own directory, and so do the external tools and shell scripts it runs. An object other
-tasks will load goes to `processed/` (for an agent, after sign-off), and the task README records its path.
+tasks will load goes to `processed/` (an agent puts it there only after a human's sign-off), and the task README
+records its path.
 
 Every write into `processed/` sits in a `writes` block: a notebook cell that starts `%%writes <path>`, or
 `with writes(<path>):` in a script, where `<path>` is the store. It records in the store which task wrote what
@@ -77,8 +82,8 @@ trace stops at it, and the only link to the task that made it is that task's REA
 A working object is an AnnData zarr store, `processed/working/<name>_<YYYY-MM-DD>.zarr`, in which results from many
 tasks accumulate.
 
-- Read only what you need: `ad.io.read_elem(zarr.open_group(path)["obs"])`, or `ad.experimental.read_lazy`.
-- Write back only through `commit_adata`, naming the keys you add. It refuses a key that is already there, so
+- Read only what is needed: `ad.io.read_elem(zarr.open_group(path)["obs"])`, or `ad.experimental.read_lazy`.
+- Write back only through `commit_adata`, naming the keys to add. It refuses a key that is already there, so
   nobody's results get overwritten:
 
   ```python
@@ -92,7 +97,7 @@ tasks accumulate.
   commit_adata(adata, path, keys={"obs": ["leiden_fine"]}, yes=True)  # writes
   ```
 
-- Never write an in-memory object over a working object: it erases what others added since you read it. Changing
+- Never write an in-memory object over a working object: it erases what others added since it was read. Changing
   or removing a key means a new dated copy. In it a key may be dropped; one whose values change gets a new name,
   so a name stands for the same values in every copy.
 - Create one with `adata.write_zarr(path, consolidate_metadata=False)` in a `writes` block, at a path that doesn't
@@ -107,7 +112,8 @@ tasks accumulate.
 Two records answer it. A store records which task wrote each of its keys (Data, above). A task's `inputs.yaml`
 lists what its code consumed: stores with the keys used, other tasks' files, data files. The
 [analysis-workflow](https://github.com/quadbio/analysis-workflow) plugin's `declare-inputs` skill writes that list
-from the task's scripts and notebooks: when a task is finished, ask an agent in this repo to declare its inputs.
+from the task's scripts and notebooks. For a human's task, the human asks an agent in this repo to declare its
+inputs once the task is finished.
 
 ```bash
 pixi run analysis-workflow trace <store> <key>      # or: trace <file>
@@ -118,7 +124,8 @@ inputs are not declared. The plugin's `trace-lineage` skill writes it up as a gr
 
 ## Git
 
-You work in the main checkout. A pull request is optional and encouraged for anything others build on:
+Humans work in the main checkout. For a human's task a pull request is optional, and encouraged for anything
+others build on:
 
 ```bash
 git switch -c <branch>
@@ -127,6 +134,5 @@ git push -u origin <branch>
 gh pr create                   # its body starts from the PR template
 ```
 
-It is reviewed against `REVIEW_GUIDE.md`. Switching
-branches changes the main checkout that agents' sessions read, `pixi.toml` included: switch back to `main` when you
-are done.
+It is reviewed against `REVIEW_GUIDE.md`. Switching branches changes the main checkout that agents' sessions read,
+`pixi.toml` included, so a human switches back to `main` when done.
