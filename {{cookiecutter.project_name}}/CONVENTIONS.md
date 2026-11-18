@@ -122,6 +122,18 @@ pixi run analysis-workflow trace <store> <key>      # or: trace <file>
 then shows the tasks and artifacts a key or a file rests on, back to the raw data, and fails on a task whose
 inputs are not declared. The plugin's `trace-lineage` skill writes it up as a graph and a summary.
 
+## Exceptions
+
+A rule here, or one of the plugin's, is broken only on purpose and with a human's approval. The pull request notes
+it as a row of its "Method and decisions" table:
+
+| decision | value | by | why |
+| --- | --- | --- | --- |
+| exception: `<the rule>` | `<what was done>` | `<who approved, YYYY-MM-DD>` | `<why the rule could not hold>` |
+
+When the exception belongs to one task, that task's README names it too, in that pull request's entry under
+"PRs and issues".
+
 ## Git
 
 Humans work in the main checkout. For a human's task a pull request is optional, and encouraged for anything
