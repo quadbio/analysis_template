@@ -2,6 +2,7 @@
 
 **Date:** 2026-01-27
 **Author:** ML
+**Id:** 5c1d9e42
 
 <!-- Every heading below stays, in this order, and no others are added; a section with nothing to say reads "None."
 The guidance comments stay too. -->
@@ -19,17 +20,10 @@ otherwise; a later change is recorded here too. -->
 | UMAP overviews | `figures/` (gitignored) |
 | a new working object | Write-back, below |
 
-## Inputs
-
-<!-- The actual files, not concepts: this is what makes the task re-runnable. -->
-
-- scanpy's PBMC 3k dataset, downloaded to `data/example_dataset/raw/`
-- CellTypist's `Immune_All_High.pkl` model
-
 ## Write-back
 
-<!-- What went into a shared object, under which keys, and anything placed in `data/<dataset>/processed/` with its
-final path. -->
+<!-- What each key written to a shared object holds, and the final path of anything placed in
+`data/<dataset>/processed/`. Which task wrote a key is recorded in the store itself. -->
 
 - `data/example_dataset/processed/working/pbmc3k_2026-01-27.zarr`, a new working object, holding:
   - `obsm["X_scVI"]`, `obsm["X_umap"]`: scVI latent space and its UMAP

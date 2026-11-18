@@ -1,0 +1,2 @@
+- path: data/example_dataset/raw/pbmc3k_raw.h5ad
+- path: ~/.celltypist/data/models/Immune_All_High.pkl
