@@ -57,17 +57,19 @@ fig.savefig(PATHS.figures / "umap.pdf")
 | `data/<dataset>/` | holds |
 | --- | --- |
 | `raw/` | bytes as they arrived, never changed |
-| `resources/` | curated inputs that are not data: gene lists, marker tables |
-| `processed/` | objects other tasks load: working objects in `working/`, others in descriptively named subdirectories |
+| `resources/` | curated inputs from outside the repo that are not data: gene lists, marker tables |
+| `processed/` | AnnData and SpatialData stores other tasks load: working objects in `working/`, others in descriptively named subdirectories |
 
-A task writes into its own directory, and so do the external tools and shell scripts it runs. An object other
-tasks will load goes to `processed/` (for an agent, after sign-off), and the task README records its path.
+A task writes into its own directory, and so do the external tools and shell scripts it runs. An AnnData or
+SpatialData store other tasks will load goes to `processed/` (for an agent, after sign-off), and the task README
+records its path. Any other file they will load stays in the task that made it, in `results/` or `outputs/`, and
+is read from there: it cannot hold a record of its own, and there its location says which task made it.
 
 Every write into `processed/` sits in a `writes` block: a notebook cell that starts `%%writes <path>`, or
 `with writes(<path>):` in a script, where `<path>` is the store. It records in the store which task wrote what
 (`adata.uns["provenance"]`, `sdata.attrs["provenance"]`). That goes for a write-back, a new object, a new
 SpatialData element and a copy out of a task's `outputs/`. Stores only grow: nothing in one is replaced or removed
-in place. A plain file under `data/` carries no such record.
+in place.
 
 ## Working objects
 

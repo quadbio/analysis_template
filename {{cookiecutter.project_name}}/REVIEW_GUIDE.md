@@ -32,6 +32,7 @@ A write to a working object goes through `commit_adata`, gated behind a dry run.
 - a replaced SpatialData image, labels, points or shapes element, where a new element name would do;
 - a write into `data/<dataset>/processed/` outside a `writes` block, a shell `cp` or `mv` among them: the store
   then has no record of the task;
+- a file of another format that other tasks load, placed under `data/`: nothing says which task made it;
 - in a new dated copy, a key whose values changed under its old name.
 
 ### 2. Promotions, which leave no diff
