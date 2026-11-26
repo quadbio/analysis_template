@@ -19,6 +19,10 @@ which creates the task directory with its `README.md` and a starter notebook in 
 notebook, fills in the README's question, and works. The README's author line takes the git user name;
 `--author <name>` sets another.
 
+A task that ports older work, from another repo or a folder older than these conventions, is started with
+`--ported-from <repo>:<path>@<commit>`. The README records where it came from, and the task keeps the old version
+number. Lane and author follow who originated the work, not who ported it.
+
 ## Tasks
 
 All analysis lives in task directories, `analysis/<dataset>/<topic>/<lane>_<name>_vN/`:
@@ -27,7 +31,7 @@ All analysis lives in task directories, `analysis/<dataset>/<topic>/<lane>_<name
   `spatial/`, can mostly be worked on in any order.
 - `<lane>` is `human` or `agent`; the README's author line says who: a name, or the model.
 - `vN` counts the answers to one question across both lanes: `human_markers_v1` may be followed by
-  `agent_markers_v2`. `analysis-workflow new` refuses any other version than the next.
+  `agent_markers_v2`. `analysis-workflow new` refuses any other version than the next, but for a port.
 - A task is edited freely until its first write-back to a shared object or until other tasks read its outputs (for
   an agent's task: its merge). After that it is frozen, and a change is the next version, whose README names the
   one it follows.
@@ -38,11 +42,16 @@ All analysis lives in task directories, `analysis/<dataset>/<topic>/<lane>_<name
 | `inputs.yaml` | yes | what the task's code consumed, written by an agent (What an artifact rests on) |
 | `notebooks/` | yes | `NN_<step>.ipynb`, numbered in run order; outputs committed, so keep them small |
 | `scripts/` | yes | `NN_<step>.py`, numbered in run order; `_common.py` holds the task's paths |
+| `workflow/` | yes | a workflow engine's files: Snakefile, rules, configs, profiles |
 | `results/` | yes | small evidence tables; past ~1 MB they belong in `outputs/` |
 | `reports/` | yes | a report |
 | `figures/` | no | figures |
 | `outputs/` | no | data artifacts |
 | `logs/` | no | batch-job logs |
+
+`analysis-workflow new` lays a task out this way, and the names are reserved for what the table says. At a task's
+end, `analysis-workflow tidy <task>` removes every directory it left empty. Every finished task has its `README.md`
+and its `inputs.yaml`.
 
 Every output path comes from `task_paths`: `PATHS = task_paths()` in a notebook, `task_paths(__file__)` in a script;
 `PATHS.ensure()` creates the directories. Dataset paths come from `FilePaths`:
@@ -64,15 +73,17 @@ fig.savefig(PATHS.figures / "umap.pdf")
 | `resources/` | curated inputs that are not data: gene lists, marker tables |
 | `processed/` | objects other tasks load: working objects in `working/`, others in descriptively named subdirectories |
 
-A task writes into its own directory, and so do the external tools and shell scripts it runs. An object other
-tasks will load goes to `processed/` (an agent puts it there only after a human's sign-off), and the task README
-records its path.
+A task writes into its own directory, and so do the external tools, shell scripts and batch jobs it runs. A
+workflow engine runs with its working directory in `PATHS.outputs`, where its results and its own state land. An
+object other tasks will load goes to `processed/` inside a `writes` block (below), which records the task in it; an
+agent does so only after a human's sign-off. The task README records its path.
 
 Every write into `processed/` sits in a `writes` block: a notebook cell that starts `%%writes <path>`, or
 `with writes(<path>):` in a script, where `<path>` is the store. It records in the store which task wrote what
 (`adata.uns["provenance"]`, `sdata.attrs["provenance"]`). That goes for a write-back, a new object, a new
-SpatialData element and a copy out of a task's `outputs/`. Stores only grow: nothing in one is replaced or removed
-in place.
+SpatialData element and a copy out of a task's `outputs/`. A store a batch job built there is moved, once
+reviewed: nothing half-written reaches shared storage, and a rerun of the job cannot touch it. Stores only grow:
+nothing in one is replaced or removed in place.
 
 **Limitation.** Only AnnData and SpatialData stores hold such a record. Any other file under `data/` has none: a
 trace stops at it, and the only link to the task that made it is that task's README.
