@@ -75,8 +75,8 @@ fig.savefig(PATHS.figures / "umap.pdf")
 
 A task writes into its own directory, and so do the external tools, shell scripts and batch jobs it runs. A
 workflow engine runs with its working directory in `PATHS.outputs`, where its results and its own state land. An
-object other tasks will load goes to `processed/` (an agent puts it there only after a human's sign-off), and the task
-README records its path.
+object other tasks will load goes to `processed/` inside a `writes` block (below), which records the task in it; an
+agent does so only after a human's sign-off. The task README records its path.
 
 Every write into `processed/` sits in a `writes` block: a notebook cell that starts `%%writes <path>`, or
 `with writes(<path>):` in a script, where `<path>` is the store. It records in the store which task wrote what
