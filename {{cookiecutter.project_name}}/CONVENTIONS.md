@@ -50,8 +50,8 @@ All analysis lives in task directories, `analysis/<dataset>/<topic>/<lane>_<name
 | `logs/` | no | batch-job logs |
 
 `analysis-workflow new` lays a task out this way, and the names are reserved for what the table says. At a task's
-end, `analysis-workflow tidy <task>` removes what it left unused: every empty directory, and the task template's
-files never changed. `README.md` and `inputs.yaml` always stay: every finished task has both.
+end, `analysis-workflow tidy <task>` removes every directory it left empty. Every finished task has its `README.md`
+and its `inputs.yaml`.
 
 Every output path comes from `task_paths`: `PATHS = task_paths()` in a notebook, `task_paths(__file__)` in a script;
 `PATHS.ensure()` creates the directories. Dataset paths come from `FilePaths`:
