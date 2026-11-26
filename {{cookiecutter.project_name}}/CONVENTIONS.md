@@ -42,12 +42,15 @@ All analysis lives in task directories, `analysis/<dataset>/<topic>/<lane>_<name
 | `inputs.yaml` | yes | what the task's code consumed, written by an agent (What an artifact rests on) |
 | `notebooks/` | yes | `NN_<step>.ipynb`, numbered in run order; outputs committed, so keep them small |
 | `scripts/` | yes | `NN_<step>.py`, numbered in run order; `_common.py` holds the task's paths |
-| `workflow/` | yes | a workflow engine's files (Snakefile, rules, configs, profiles), only in a task that runs one |
+| `workflow/` | yes | a workflow engine's files: Snakefile, rules, configs, profiles |
 | `results/` | yes | small evidence tables; past ~1 MB they belong in `outputs/` |
 | `reports/` | yes | a report |
 | `figures/` | no | figures |
 | `outputs/` | no | data artifacts |
 | `logs/` | no | batch-job logs |
+
+These names are reserved for what the table says, and a task has only those it uses: at its end,
+`analysis-workflow tidy <task>` removes the ones left empty, or holding only the task template's files unchanged.
 
 Every output path comes from `task_paths`: `PATHS = task_paths()` in a notebook, `task_paths(__file__)` in a script;
 `PATHS.ensure()` creates the directories. Dataset paths come from `FilePaths`:
