@@ -130,7 +130,8 @@ everything in the root `resources/`, it is tracked, unlike `data/<dataset>/resou
   not `methods`.
 - The top level holds what all datasets share; `datasets: <dataset>:` adds a dataset's own, in the same sections.
   No key is set at both levels; `tests/test_figure_conventions.py` checks it.
-- A script reads the file from its own checkout, not the main one, so a branch that changes it sees the change.
+- A script reads the file from its own checkout (`analysis_workflow.checkout(__file__)`), not the main one, so a
+  branch that changes it sees the change.
 
 ## What an artifact rests on
 
