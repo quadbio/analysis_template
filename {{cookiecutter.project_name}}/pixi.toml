@@ -65,7 +65,7 @@ session-info2 = "*"
 # Local editable package for path helpers
 {{ cookiecutter.package_name | replace('_', '-') }} = { path = ".", editable = true }
 # Task directories, task paths and additive write-back (CONVENTIONS.md)
-analysis-workflow = ">=0.13"
+analysis-workflow = ">=0.14"
 igraph = ">=1.0.0, <2"
 celltypist = ">=1.7.1, <2"
 
