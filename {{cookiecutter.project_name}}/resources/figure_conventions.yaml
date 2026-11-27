@@ -1,0 +1,13 @@
+# Figure conventions of this repo: CONVENTIONS.md, "Figure conventions". One section per kind, for example
+#
+#   colors:
+#     sample_embedding_methods: {FGW: "#08519c", Pseudobulk: "#969696"}
+#   markers:
+#     entity_kinds: {niche: "D", cell_type: "o"}
+#   datasets:
+#     <dataset>:  # its folder name under data/; adds to the sections above, never repeats a key
+#       colors:
+#         stains: {DAPI: "#3366ff"}
+
+colors: {}
+markers: {}

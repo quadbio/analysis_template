@@ -90,4 +90,4 @@ addopts = [
 
 [tool.cruft]
 # Project-owned after creation: `cruft update` leaves these alone.
-skip = [ "README.md", "analysis", "data", "src", "tests" ]
+skip = [ "README.md", "analysis", "data", "resources", "src", "tests" ]
