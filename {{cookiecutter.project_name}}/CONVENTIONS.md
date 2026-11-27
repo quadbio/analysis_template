@@ -118,6 +118,20 @@ tasks accumulate.
 - A result that would grow the object materially (`analyze_anndata_size`) becomes a standalone AnnData on the same
   `obs_names`, never a bare `.npy`.
 
+## Figure conventions
+
+Conventions shared by the repo's figures, whatever draws them, live in `resources/figure_conventions.yaml`. Like
+everything in the root `resources/`, it is tracked, unlike `data/<dataset>/resources/`.
+
+- A convention that fits in a store goes there: the colours of a label in `uns["<key>_colors"]`. The file holds the
+  rest, such as method colours and marker shapes, and the colours of a label several datasets share (e.g. a
+  genotype), which each store's `uns` copies from it.
+- One section per kind (`colors`, `markers`, ...), keys naming what they hold precisely: `sample_embedding_methods`,
+  not `methods`.
+- The top level holds what all datasets share; `datasets: <dataset>:` adds a dataset's own, in the same sections.
+  No key is set at both levels; `tests/test_figure_conventions.py` checks it.
+- A script reads the file from its own checkout, not the main one, so a branch that changes it sees the change.
+
 ## What an artifact rests on
 
 Two records answer it. A store records which task wrote each of its keys (Data, above). A task's `inputs.yaml`
